@@ -5,8 +5,7 @@ from Queue import Queue
 from threading import Thread
 from json import loads, dumps
 from cPickle import dump, load
-import langid
-from nltk import UnigramTagger, BigramTagger
+from nltk import pos_tag, word_tokenize
 from OSC import OSCClient, OSCMessage, OSCClientError
 from twython import TwythonStreamer
 
@@ -45,25 +44,19 @@ def setup():
     streamThread = Thread(target=myTwitterStream.statuses.filter, kwargs={'track':','.join(SEARCH_TERMS)})
     streamThread.start()
 
-    ## for language identification
-    langid.set_languages(['en'])
-    ## for tagging
-    input = open('uniTag.en.pkl', 'rb')
-    enTagger = load(input)
-    input.close()
-
 def loop():
     global secrets, lastTwitterCheck, myTwitterStream, enTagger, streamThread
     ## check twitter queue
     if((time.time()-lastTwitterCheck > 10) and
        (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
-        ## TODO: forward to somewhere
-        if(langid.classify(tweet)[0] == 'en'):
-            txtWords = tweet.replace(",","").replace(".","").replace("?","").replace("!","").split()
-            for (word,tag) in enTagger.tag(txtWords):
-                print "%s = %s" % (word,tag)
-        
+        for st in SEARCH_TERMS:
+            tweet = tweet.replace(st,"")
+        tweet = tweet.replace(",","").replace(".","").replace("?","").replace("!","")
+        for (word,tag) in pos_tag(word_tokenize(tweet)):
+            print "%s : %s" % (word,tag)
+
+        ## TODO: forward somewhere
         lastTwitterCheck = time.time()
 
 if __name__=="__main__":
