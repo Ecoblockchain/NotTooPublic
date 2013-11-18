@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import sys, time, getopt
-from Queue import Queue
 from threading import Thread
-from json import loads, dumps
+from Queue import Queue
 from cPickle import dump, load
-from nltk import pos_tag, word_tokenize
 from OSC import OSCClient, OSCMessage, OSCClientError
+from nltk import pos_tag, word_tokenize
 from twython import TwythonStreamer
 
 ## What to search for
 SEARCH_TERMS = ["#aeLab", "#aeffect", "#aeffectLab", "#nottoopublic"]
 
 class TwitterStreamReceiver(TwythonStreamer):
-    """A class for receiving a Twitter stream"""
     def __init__(self, *args, **kwargs):
         super(TwitterStreamReceiver, self).__init__(*args, **kwargs)
         self.tweetQ = Queue()
@@ -29,7 +27,7 @@ class TwitterStreamReceiver(TwythonStreamer):
         return self.tweetQ.get()
 
 def setup():
-    global secrets, lastTwitterCheck, myTwitterStream, enTagger, streamThread
+    global lastTwitterCheck, myTwitterStream, streamThread
     secrets = {}
     lastTwitterCheck = time.time()
     ## read secrets from file
@@ -45,13 +43,12 @@ def setup():
     streamThread.start()
 
 def loop():
-    global secrets, lastTwitterCheck, myTwitterStream, enTagger, streamThread
+    global lastTwitterCheck, myTwitterStream, streamThread
     ## check twitter queue
-    if((time.time()-lastTwitterCheck > 10) and
-       (not myTwitterStream.empty())):
+    if((time.time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
         for st in SEARCH_TERMS:
-            tweet = tweet.replace(st,"")
+            tweet = tweet.replace(st.lower(),"")
         tweet = tweet.replace(",","").replace(".","").replace("?","").replace("!","")
         for (word,tag) in pos_tag(word_tokenize(tweet)):
             print "%s : %s" % (word,tag)
@@ -60,18 +57,8 @@ def loop():
         lastTwitterCheck = time.time()
 
 if __name__=="__main__":
-    (inIp, inPort) = ("127.0.0.1", 8888)
-    opts, args = getopt.getopt(sys.argv[1:],"i:p:",["inip=","inport="])
-    for opt, arg in opts:
-        if(opt in ("--inip","-i")):
-            inIp = str(arg)
-        elif(opt in ("--inport","-p")):
-            inPort = int(arg)
-
-    ## setup the twitter stream
     setup()
 
-    ## run loop
     try:
         while(True):
             ## keep it from looping faster than ~60 times per second
@@ -81,6 +68,5 @@ if __name__=="__main__":
             if (loopTime < 0.016):
                 time.sleep(0.016 - loopTime)
     except KeyboardInterrupt :
-        print "exiting, bye!"
         myTwitterStream.disconnect()
         streamThread.join()
