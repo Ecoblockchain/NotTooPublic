@@ -89,9 +89,5 @@ if __name__=="__main__":
                 time.sleep(0.016 - loopTime)
     except KeyboardInterrupt :
         print "exiting, bye!"
-        foo=time.time()
-        myTwitterStream.disconnect()
-        myTwitterStream.disconnect()
         myTwitterStream.disconnect()
         streamThread.join()
-        print (time.time()-foo)
