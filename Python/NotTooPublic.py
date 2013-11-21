@@ -4,7 +4,7 @@ import sys, time, getopt
 from threading import Thread
 from Queue import Queue
 from cPickle import dump, load
-from OSC import OSCClient, OSCMessage, OSCClientError
+from OSC import OSCClient, OSCMessage, OSCClientError, OSCServer, getUrlStr
 from nltk import pos_tag, word_tokenize
 from twython import TwythonStreamer
 
@@ -26,9 +26,17 @@ class TwitterStreamReceiver(TwythonStreamer):
     def get(self):
         return self.tweetQ.get()
 
+def oscSubscribeHandler(addr, tags, args, source):
+    ip = getUrlStr(source).split(":")[0]
+    port = int(args[0])
+    print "subscribing %s:%s" % (ip,port)
+    myOscSubscribers[(ip,port)] = (ip,port)
+
 def setup():
     global lastTwitterCheck, myTwitterStream, streamThread
+    global myOscSubscribers, myOscServer, oscThread, myOscClient
     secrets = {}
+    myOscSubscribers = {}
     lastTwitterCheck = time.time()
     ## read secrets from file
     inFile = open('oauth.txt', 'r')
@@ -42,18 +50,36 @@ def setup():
     streamThread = Thread(target=myTwitterStream.statuses.filter, kwargs={'track':','.join(SEARCH_TERMS)})
     streamThread.start()
 
+    myOscClient = OSCClient()
+    myOscServer = OSCServer(('127.0.0.1', 8888))
+    myOscServer.addMsgHandler('/NotTooPublic/subscribe', oscSubscribeHandler)
+    myOscServer.addMsgHandler('default', lambda addr, tags, args, source:None)
+    oscThread = Thread(target=myOscServer.serve_forever)
+    oscThread.start()
+
 def loop():
-    global lastTwitterCheck, myTwitterStream, streamThread
+    global lastTwitterCheck, myTwitterStream, streamThread, myOscSubscribers
     ## check twitter queue
     if((time.time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
         for st in SEARCH_TERMS:
             tweet = tweet.replace(st.lower(),"")
         tweet = tweet.replace(",","").replace(".","").replace("?","").replace("!","")
-        for (word,tag) in pos_tag(word_tokenize(tweet)):
+        taggedTweet = pos_tag(word_tokenize(tweet))
+        for (word,tag) in taggedTweet:
             print "%s : %s" % (word,tag)
 
-        ## TODO: forward somewhere
+        ## forward to all subscribers
+        msg = OSCMessage()
+        msg.setAddress("/NotTooPublic/message")
+        msg.append(" ".join([str(i[0]) for i in taggedTweet]))
+        msg.append(" ".join([str(i[1]) for i in taggedTweet]))
+        for (ip,port) in myOscSubscribers:
+            try:
+                myOscClient.sendto(msg, (ip, port))
+            except OSCClientError:
+                print "no connection to %s : %s, can't sen message" % (ip, port)
+
         lastTwitterCheck = time.time()
 
 if __name__=="__main__":
@@ -69,4 +95,6 @@ if __name__=="__main__":
                 time.sleep(0.016 - loopTime)
     except KeyboardInterrupt :
         myTwitterStream.disconnect()
+        myOscServer.close()
         streamThread.join()
+        oscThread.join()
