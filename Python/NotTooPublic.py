@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import sys, time, getopt
+import sys, time, getopt, re
 from threading import Thread
 from Queue import Queue
-import re
 from cPickle import dump, load
 from OSC import OSCClient, OSCMessage, OSCClientError, OSCServer, getUrlStr
 from nltk import pos_tag, word_tokenize
@@ -67,7 +66,9 @@ def loop():
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
         ## removes punctuation
-        tweet = re.sub(r'[,.!?]', '', tweet)
+        tweet = re.sub(r'[.,;:!?*/+=\-&%^/\\_$~()<>{}\[\]]', ' ', tweet)
+        ## replaces double-spaces with single space
+        tweet = re.sub(r'( +)', ' ', tweet)
         taggedTweet = pos_tag(word_tokenize(tweet))
         for (word,tag) in taggedTweet:
             print "%s : %s" % (word,tag)
