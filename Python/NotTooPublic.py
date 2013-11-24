@@ -3,6 +3,7 @@
 import sys, time, getopt
 from threading import Thread
 from Queue import Queue
+import re
 from cPickle import dump, load
 from OSC import OSCClient, OSCMessage, OSCClientError, OSCServer, getUrlStr
 from nltk import pos_tag, word_tokenize
@@ -16,7 +17,8 @@ class TwitterStreamReceiver(TwythonStreamer):
         super(TwitterStreamReceiver, self).__init__(*args, **kwargs)
         self.tweetQ = Queue()
     def on_success(self, data):
-        if 'text' in data:
+        ## no re-tweets
+        if ('text' in data) and (not data['text'].startswith(('rt','RT'))):
             self.tweetQ.put(data['text'].encode('utf-8'))
             print "received %s" % (data['text'].encode('utf-8'))
     def on_error(self, status_code, data):
@@ -62,9 +64,10 @@ def loop():
     ## check twitter queue
     if((time.time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
-        for st in SEARCH_TERMS:
-            tweet = tweet.replace(st.lower(),"")
-        tweet = tweet.replace(",","").replace(".","").replace("?","").replace("!","")
+        ## removes hashtags, arrobas and links
+        tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
+        ## removes punctuation
+        tweet = re.sub(r'[,.!?]', '', tweet)
         taggedTweet = pos_tag(word_tokenize(tweet))
         for (word,tag) in taggedTweet:
             print "%s : %s" % (word,tag)
