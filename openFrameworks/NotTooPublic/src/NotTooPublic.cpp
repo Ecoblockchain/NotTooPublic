@@ -7,7 +7,7 @@ void NotTooPublic::setup(){
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
 	ofBackground(0);
-    //ofSetBackgroundAuto(false);
+
     myOscReceiver.setup(OSC_RCVR_IP);
 
     ofxOscSender myOscSender;
