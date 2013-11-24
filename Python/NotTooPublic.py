@@ -78,7 +78,7 @@ def loop():
             try:
                 myOscClient.sendto(msg, (ip, port))
             except OSCClientError:
-                print "no connection to %s : %s, can't sen message" % (ip, port)
+                print "no connection to %s : %s, can't send message" % (ip, port)
 
         lastTwitterCheck = time.time()
 
