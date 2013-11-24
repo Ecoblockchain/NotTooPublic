@@ -12,6 +12,7 @@ void Bling::setup(){
     myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
     nowMillis = ofGetElapsedTimeMillis();
     lastStateChangeMillis = nowMillis;
+    startMillis = nowMillis;
     currentState = STATE_INTRO;
     currentFadeValue = -255;
 
@@ -58,6 +59,7 @@ void Bling::update(){
             lastStateChangeMillis = nowMillis;
             currentFadeValue = 255;
         }
+        // fading out...
         else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 2000)){
             currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
         }
@@ -75,6 +77,11 @@ void Bling::update(){
             ofBackground(0);
             ofDisableAlphaBlending();
             fboCanvas.end();
+        }
+        else if((nowMillis - lastStateChangeMillis > 2000) && (nowMillis - startMillis > 240000)){
+            currentFadeValue = -255;
+            currentState = STATE_OUTRO;
+            lastStateChangeMillis = nowMillis;
         }
         else if((nowMillis - lastStateChangeMillis > 2000) && (!myMessages.empty())){
             currentMessage = myMessages.front().first;
@@ -120,6 +127,22 @@ void Bling::update(){
             }
         }
     }
+    if(currentState == STATE_OUTRO){
+        if(currentFadeValue >= 255){
+            lastStateChangeMillis = nowMillis;
+            currentFadeValue = 255;
+        }
+        // fading out...
+        else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 5000)){
+            currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
+        }
+        // fading in...
+        else if(currentFadeValue < 0){
+            lastStateChangeMillis = nowMillis;
+            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
+        }
+    }
+
 
     if(currentState == STATE_PAUSE){
         fboCanvas.begin();
@@ -153,6 +176,20 @@ void Bling::update(){
         ofSetColor(255-abs(currentFadeValue));
         ofPushMatrix();
         string foo = "GREETINGS\nOAKLAND!\nSUP?";
+        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
+        myFont.drawString(foo, 0, 0);
+        ofPopMatrix();
+        ofDisableAlphaBlending();
+        fboCanvas.end();
+    }
+
+    if(currentState == STATE_OUTRO){
+        fboCanvas.begin();
+        ofEnableAlphaBlending();
+        ofBackground(0);
+        ofSetColor(255-abs(currentFadeValue));
+        ofPushMatrix();
+        string foo = "Not Too Public\nKo Nakatsu\nThiago Hersan";
         ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
         myFont.drawString(foo, 0, 0);
         ofPopMatrix();
