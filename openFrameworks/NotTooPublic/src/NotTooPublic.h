@@ -20,9 +20,7 @@ class NotTooPublic : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 	protected:
-        ofTrueTypeFont myFont;
         ofxOscReceiver myOscReceiver;
         ofxOscMessage myOscMessage;
-        string currentMessage;
         deque< pair<string,string> > myMessages;
 };

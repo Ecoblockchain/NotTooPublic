@@ -24,7 +24,7 @@ void Bling::setup(){
     ofEnableAlphaBlending();
     ofBackground(0,0);
     ofSetColor(255,255);
-    string greetings[] = {"Oakland: send us your gold", "#NotTooPublic on Twitter"};
+    string greetings[] = {"Oakland: send us your gold", "#NotTooPublic"};
     float scale = (2.0f/3.0f*fboTitle.getHeight()-10)/myFont.stringHeight(greetings[0]);
     ofPushMatrix();
     ofTranslate(10,myFont.stringHeight(greetings[0])*scale);
@@ -127,7 +127,7 @@ void Bling::update(){
             }
         }
     }
-    if(currentState == STATE_OUTRO){
+    else if(currentState == STATE_OUTRO){
         if(currentFadeValue >= 255){
             lastStateChangeMillis = nowMillis;
             currentFadeValue = 255;
@@ -169,6 +169,7 @@ void Bling::update(){
         fboCanvas.end();
     }
 
+    //// Actual Drawings
     if(currentState == STATE_INTRO){
         fboCanvas.begin();
         ofEnableAlphaBlending();
