@@ -2,3 +2,7 @@ oauth*.txt
 secrets*.txt
 *.pyc
 *.db
+.DS_Store
+*.pbxuser
+xcuserdata
+bin/
