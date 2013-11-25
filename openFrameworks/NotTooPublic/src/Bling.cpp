@@ -26,15 +26,18 @@ void Bling::update(){
     if(currentState == STATE_INTRO){
         if(currentFadeValue >= 255){
             introImages.pop_front();
+            lastStateChangeMillis = nowMillis;
+            currentFadeValue = -255;
             if(introImages.size() > 0){
                 currentState = STATE_INTRO;
-                lastStateChangeMillis = nowMillis;
-                currentFadeValue = -255;
             }
             else{
+                fboCanvas.begin();
+                ofEnableAlphaBlending();
+                ofBackground(0);
+                ofDisableAlphaBlending();
+                fboCanvas.end();
                 currentState = STATE_BLANK;
-                lastStateChangeMillis = nowMillis;
-                currentFadeValue = 255;
             }
         }
         // fading out...
@@ -48,13 +51,12 @@ void Bling::update(){
         }
     }
     else if(currentState == STATE_BLANK){
-        if(currentFadeValue > 0){
+        if(currentFadeValue < 0){
+            lastStateChangeMillis = nowMillis;
+            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
+        }
+        else if(currentFadeValue > 0){
             currentFadeValue = 0;
-            fboCanvas.begin();
-            ofEnableAlphaBlending();
-            ofBackground(0);
-            ofDisableAlphaBlending();
-            fboCanvas.end();
         }
         else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
             currentFadeValue = -255;
@@ -197,7 +199,7 @@ void Bling::update(){
 void Bling::draw(){
     NotTooPublic::draw();
     ofBackground(0);
-    ofSetColor(255);
+    ofSetColor((currentState == STATE_BLANK)?255-abs(currentFadeValue):255);
     if((currentState != STATE_INTRO) && (currentState != STATE_OUTRO)){
         fboTitle.draw(0,0);
     }
