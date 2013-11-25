@@ -18,4 +18,5 @@ class Secret : public NotTooPublic{
         ofFbo fboTitle, fboCanvas;
         vector<string> currentMessage;
         int currentImportantWordIndex;
+        deque<ofImage> introImages;
 };

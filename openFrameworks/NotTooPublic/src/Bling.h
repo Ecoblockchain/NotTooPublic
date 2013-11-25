@@ -22,4 +22,5 @@ class Bling : public NotTooPublic{
         string currentMessage;
         vector<ofPath> currentMessagePath;
         ofTrueTypeFont myFont;
+        deque<ofImage> introImages;
 };

@@ -47,6 +47,20 @@ void Bling::setup(){
     fboCanvas.begin();
     ofEnableSmoothing();
     fboCanvas.end();
+
+    ofDirectory dir(ofToDataPath(""));
+    dir.listDir();
+    for(int i=0; i<dir.size(); i++){
+        string fname = dir.getFile(i).getFileName();
+        string match = string("BlingTitle");
+        if(fname.size() >= match.size()){
+            if(fname.compare(0, match.size(), match) == 0){
+                ofImage f;
+                f.loadImage(ofToDataPath(fname));
+                introImages.push_back(f);
+            }
+        }
+    }
 }
 
 void Bling::update(){
@@ -55,9 +69,17 @@ void Bling::update(){
 
     if(currentState == STATE_INTRO){
         if(currentFadeValue >= 255){
-            currentState = STATE_BLANK;
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = 255;
+            introImages.pop_front();
+            if(introImages.size() > 0){
+                currentState = STATE_INTRO;
+                lastStateChangeMillis = nowMillis;
+                currentFadeValue = -255;
+            }
+            else{
+                currentState = STATE_BLANK;
+                lastStateChangeMillis = nowMillis;
+                currentFadeValue = 255;
+            }
         }
         // fading out...
         else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 2000)){
@@ -176,9 +198,10 @@ void Bling::update(){
         ofBackground(0);
         ofSetColor(255);
         ofPushMatrix();
-        string foo = "GREETINGS\nOAKLAND!\nSUP?";
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
-        myFont.drawString(foo, 0, 0);
+        float scaleVal = min(fboCanvas.getWidth()/introImages.front().width, fboCanvas.getHeight()/introImages.front().height);
+        creditImage.resize(scaleVal*introImages.front().width, scaleVal*introImages.front().height);
+        ofTranslate((fboCanvas.getWidth()-introImages.front().width)/2, (fboCanvas.getHeight()-introImages.front().height)/2);
+        introImages.front().draw(0,0);
         ofPopMatrix();
         ofDisableAlphaBlending();
         fboCanvas.end();
