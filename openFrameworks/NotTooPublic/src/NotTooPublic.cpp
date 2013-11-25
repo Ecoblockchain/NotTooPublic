@@ -31,6 +31,21 @@ void NotTooPublic::update(){
     }
 }
 
+void NotTooPublic::loadIntroImages(string filenamePrefix){
+    ofDirectory dir(ofToDataPath(""));
+    dir.listDir();
+    for(int i=0; i<dir.size(); i++){
+        string fname = dir.getFile(i).getFileName();
+        if(fname.size() >= filenamePrefix.size()){
+            if(fname.compare(0, filenamePrefix.size(), filenamePrefix) == 0){
+                ofImage f;
+                f.loadImage(ofToDataPath(fname));
+                introImages.push_back(f);
+            }
+        }
+    }
+}
+
 //--------------------------------------------------------------
 void NotTooPublic::draw(){
 }

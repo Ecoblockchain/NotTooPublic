@@ -42,19 +42,7 @@ void Secret::setup(){
     ofEnableSmoothing();
     fboCanvas.end();
 
-    ofDirectory dir(ofToDataPath(""));
-    dir.listDir();
-    for(int i=0; i<dir.size(); i++){
-        string fname = dir.getFile(i).getFileName();
-        string match = string("SecretTitle");
-        if(fname.size() >= match.size()){
-            if(fname.compare(0, match.size(), match) == 0){
-                ofImage f;
-                f.loadImage(ofToDataPath(fname));
-                introImages.push_back(f);
-            }
-        }
-    }
+    loadIntroImages("SecretTitle");
 
     myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
 }

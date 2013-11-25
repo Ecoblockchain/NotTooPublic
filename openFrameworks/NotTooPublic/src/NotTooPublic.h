@@ -24,4 +24,6 @@ class NotTooPublic : public ofBaseApp{
         ofxOscMessage myOscMessage;
         deque< pair<string,string> > myMessages;
         ofImage creditImage;
+        deque<ofImage> introImages;
+        void loadIntroImages(string filenamePrefix);
 };

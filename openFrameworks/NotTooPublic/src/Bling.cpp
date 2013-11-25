@@ -4,12 +4,6 @@ void Bling::setup(){
     NotTooPublic::setup();
     myFont.loadFont("Garamond-Regular.ttf",100,true,true,true);
     noiseScale = INITIAL_NOISE_SCALE;
-    currentMessage = "Not\nToo\nPublic";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
-    currentMessage = "Tell me\nsomething\nGoood...";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
-    currentMessage = "I am\nfucking\nAwesome!";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
     nowMillis = ofGetElapsedTimeMillis();
     lastStateChangeMillis = nowMillis;
     startMillis = nowMillis;
@@ -48,19 +42,14 @@ void Bling::setup(){
     ofEnableSmoothing();
     fboCanvas.end();
 
-    ofDirectory dir(ofToDataPath(""));
-    dir.listDir();
-    for(int i=0; i<dir.size(); i++){
-        string fname = dir.getFile(i).getFileName();
-        string match = string("BlingTitle");
-        if(fname.size() >= match.size()){
-            if(fname.compare(0, match.size(), match) == 0){
-                ofImage f;
-                f.loadImage(ofToDataPath(fname));
-                introImages.push_back(f);
-            }
-        }
-    }
+    loadIntroImages("BlingTitle");
+
+    currentMessage = "Not\nToo\nPublic";
+    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
+    currentMessage = "Tell me\nsomething\nGoood...";
+    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
+    currentMessage = "I am\nfucking\nAwesome!";
+    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
 }
 
 void Bling::update(){
