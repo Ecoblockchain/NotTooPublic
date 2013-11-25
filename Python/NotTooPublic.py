@@ -9,7 +9,7 @@ from nltk import pos_tag, word_tokenize
 from twython import TwythonStreamer
 
 ## What to search for
-SEARCH_TERMS = ["#aeLab", "#aeffect", "#aeffectLab", "#nottoopublic"]
+SEARCH_TERMS = ["@nottoopublic", "#nottoopublic"]
 
 class TwitterStreamReceiver(TwythonStreamer):
     def __init__(self, *args, **kwargs):
