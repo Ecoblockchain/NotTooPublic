@@ -74,7 +74,7 @@ void Secret::update(){
             ofDisableAlphaBlending();
             fboCanvas.end();
         }
-        else if((nowMillis - lastStateChangeMillis > 2000) && (nowMillis - startMillis > 240000)){
+        else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
             currentFadeValue = -255;
             currentState = STATE_OUTRO;
             lastStateChangeMillis = nowMillis;
@@ -166,9 +166,10 @@ void Secret::update(){
         ofBackground(0);
         ofSetColor(255);
         ofPushMatrix();
-        string foo = "Not Too Public\nKo Nakatsu\nThiago Hersan";
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
-        myFont.drawString(foo, 0, 0);
+        float scaleVal = min(fboCanvas.getWidth()/creditImage.width, fboCanvas.getHeight()/creditImage.height);
+        creditImage.resize(scaleVal*creditImage.width, scaleVal*creditImage.height);
+        ofTranslate((fboCanvas.getWidth()-creditImage.width)/2, (fboCanvas.getHeight()-creditImage.height)/2);
+        creditImage.draw(0,0);
         ofPopMatrix();
         ofDisableAlphaBlending();
         fboCanvas.end();

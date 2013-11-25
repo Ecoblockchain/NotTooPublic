@@ -16,6 +16,8 @@ void NotTooPublic::setup(){
     m.setAddress("/NotTooPublic/subscribe");
     m.addIntArg(OSC_RCVR_IP);
     myOscSender.sendMessage(m);
+
+    creditImage.loadImage("Credits.png");
 }
 
 //--------------------------------------------------------------

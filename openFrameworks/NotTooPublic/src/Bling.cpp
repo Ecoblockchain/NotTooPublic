@@ -78,12 +78,12 @@ void Bling::update(){
             ofDisableAlphaBlending();
             fboCanvas.end();
         }
-        else if((nowMillis - lastStateChangeMillis > 2000) && (nowMillis - startMillis > 240000)){
+        else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
             currentFadeValue = -255;
             currentState = STATE_OUTRO;
             lastStateChangeMillis = nowMillis;
         }
-        else if((nowMillis - lastStateChangeMillis > 2000) && (!myMessages.empty())){
+        else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
             currentMessage = myMessages.front().first;
             myMessages.pop_front();
             currentMessagePath = myFont.getStringAsPoints(currentMessage);
@@ -174,7 +174,7 @@ void Bling::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofBackground(0);
-        ofSetColor(255-abs(currentFadeValue));
+        ofSetColor(255);
         ofPushMatrix();
         string foo = "GREETINGS\nOAKLAND!\nSUP?";
         ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
@@ -188,11 +188,12 @@ void Bling::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofBackground(0);
-        ofSetColor(255-abs(currentFadeValue));
+        ofSetColor(255);
         ofPushMatrix();
-        string foo = "Not Too Public\nKo Nakatsu\nThiago Hersan";
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(foo))/2, (fboCanvas.getHeight()-myFont.stringHeight(foo))/2);
-        myFont.drawString(foo, 0, 0);
+        float scaleVal = min(fboCanvas.getWidth()/creditImage.width, fboCanvas.getHeight()/creditImage.height);
+        creditImage.resize(scaleVal*creditImage.width, scaleVal*creditImage.height);
+        ofTranslate((fboCanvas.getWidth()-creditImage.width)/2, (fboCanvas.getHeight()-creditImage.height)/2);
+        creditImage.draw(0,0);
         ofPopMatrix();
         ofDisableAlphaBlending();
         fboCanvas.end();
@@ -238,10 +239,11 @@ void Bling::update(){
 void Bling::draw(){
     NotTooPublic::draw();
     ofBackground(0);
-    ofSetColor(255,255);
+    ofSetColor(255);
     if((currentState != STATE_INTRO) && (currentState != STATE_OUTRO)){
         fboTitle.draw(0,0);
     }
+    ofSetColor(255-abs(currentFadeValue));
     fboCanvas.draw(0, fboTitle.getHeight());
 }
 

@@ -23,4 +23,5 @@ class NotTooPublic : public ofBaseApp{
         ofxOscReceiver myOscReceiver;
         ofxOscMessage myOscMessage;
         deque< pair<string,string> > myMessages;
+        ofImage creditImage;
 };
