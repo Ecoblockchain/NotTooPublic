@@ -10,34 +10,8 @@ void Secret::setup(){
     fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
     fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
 
-    loadTitleFbo("SecretTweetAt");
-
-    fboTitle.begin();
-    ofEnableSmoothing();
-    ofEnableAlphaBlending();
-    ofBackground(0,0);
-    ofSetColor(255,255);
-    string greetings[] = {"Oakland: send us your secrets", "#NotTooPublic"};
-    float scale = (2.0f/3.0f*fboTitle.getHeight()-10)/myFont.stringHeight(greetings[0]);
-    ofPushMatrix();
-    ofTranslate(10,myFont.stringHeight(greetings[0])*scale);
-    ofScale(scale, scale);
-    myFont.drawString(greetings[0], 0,0);
-    ofPopMatrix();
-
-    ofPushMatrix();
-    ofTranslate(10,myFont.stringHeight(greetings[0])*scale+myFont.stringHeight(greetings[1])*scale*0.5+10);
-    ofScale(scale*0.5, scale*0.5);
-    myFont.drawString(greetings[1], 0,0);
-    ofPopMatrix();
-
-    ofNoFill();
-    ofSetColor(255,255);
-    ofRect(1,1,fboTitle.getWidth()-2,fboTitle.getHeight()-2);
-    ofDisableAlphaBlending();
-    fboTitle.end();
-
     loadIntroImages("SecretTitle");
+    loadTitleFbo("SecretTweetAt.png");
 
     myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
 }

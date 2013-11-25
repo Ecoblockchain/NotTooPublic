@@ -30,7 +30,7 @@ class NotTooPublic : public ofBaseApp{
         int currentFadeValue;
         ofFbo fboTitle, fboCanvas;
         void loadIntroImages(string filenamePrefix);
-        void loadTitleFbo(string filenamePrefix);
+        void loadTitleFbo(string filename);
         void drawIntro();
         void drawCredits();
 };

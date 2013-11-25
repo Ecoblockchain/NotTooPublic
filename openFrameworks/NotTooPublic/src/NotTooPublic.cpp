@@ -56,8 +56,22 @@ void NotTooPublic::loadIntroImages(string filenamePrefix){
     }
 }
 
-void NotTooPublic::loadTitleFbo(string filenamePrefix){
-
+void NotTooPublic::loadTitleFbo(string filename){
+    fboTitle.begin();
+    ofEnableSmoothing();
+    ofEnableAlphaBlending();
+    ofBackground(0,0);
+    ofSetColor(255,255);
+    ofImage tt;
+    tt.loadImage(filename);
+    ofPushMatrix();
+    float scaleVal = min(fboTitle.getWidth()/tt.width, fboTitle.getHeight()/tt.height);
+    tt.resize(scaleVal*tt.width, scaleVal*tt.height);
+    ofTranslate((fboTitle.getWidth()-tt.width)/2, (fboTitle.getHeight()-tt.height)/2);
+    tt.draw(0,0);
+    ofPopMatrix();
+    ofDisableAlphaBlending();
+    fboTitle.end();
 }
 
 void NotTooPublic::drawIntro(){
