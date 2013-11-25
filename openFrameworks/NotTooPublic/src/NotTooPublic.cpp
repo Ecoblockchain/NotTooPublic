@@ -18,6 +18,15 @@ void NotTooPublic::setup(){
     myOscSender.sendMessage(m);
 
     creditImage.loadImage("Credits.png");
+
+    nowMillis = ofGetElapsedTimeMillis();
+    lastStateChangeMillis = nowMillis;
+    startMillis = nowMillis;
+    currentFadeValue = -255;
+
+    fboCanvas.begin();
+    ofEnableSmoothing();
+    fboCanvas.end();
 }
 
 //--------------------------------------------------------------
@@ -29,6 +38,7 @@ void NotTooPublic::update(){
             myMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
 		}
     }
+    nowMillis = ofGetElapsedTimeMillis();
 }
 
 void NotTooPublic::loadIntroImages(string filenamePrefix){

@@ -3,12 +3,9 @@
 void Secret::setup(){
     NotTooPublic::setup();
     myFont.loadFont("TrajanPro-Regular.ttf",100,true,true,true);
-    nowMillis = ofGetElapsedTimeMillis();
-    lastStateChangeMillis = nowMillis;
-    startMillis = nowMillis;
     numWordsPlaced = 0;
-    currentFadeValue = -255;
     currentImportantWordIndex = -1;
+    currentState = STATE_INTRO;
 
     fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
     fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
@@ -38,10 +35,6 @@ void Secret::setup(){
     ofDisableAlphaBlending();
     fboTitle.end();
 
-    fboCanvas.begin();
-    ofEnableSmoothing();
-    fboCanvas.end();
-
     loadIntroImages("SecretTitle");
 
     myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
@@ -49,7 +42,6 @@ void Secret::setup(){
 
 void Secret::update(){
     NotTooPublic::update();
-    nowMillis = ofGetElapsedTimeMillis();
 
     if(currentState == STATE_INTRO){
         if(currentFadeValue >= 255){

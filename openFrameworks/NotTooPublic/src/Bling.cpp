@@ -4,11 +4,7 @@ void Bling::setup(){
     NotTooPublic::setup();
     myFont.loadFont("Garamond-Regular.ttf",100,true,true,true);
     noiseScale = INITIAL_NOISE_SCALE;
-    nowMillis = ofGetElapsedTimeMillis();
-    lastStateChangeMillis = nowMillis;
-    startMillis = nowMillis;
     currentState = STATE_INTRO;
-    currentFadeValue = -255;
 
     fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
     fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
@@ -38,9 +34,6 @@ void Bling::setup(){
     ofDisableAlphaBlending();
     fboTitle.end();
 
-    fboCanvas.begin();
-    ofEnableSmoothing();
-    fboCanvas.end();
 
     loadIntroImages("BlingTitle");
 
@@ -54,7 +47,6 @@ void Bling::setup(){
 
 void Bling::update(){
     NotTooPublic::update();
-    nowMillis = ofGetElapsedTimeMillis();
 
     if(currentState == STATE_INTRO){
         if(currentFadeValue >= 255){

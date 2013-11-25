@@ -25,5 +25,9 @@ class NotTooPublic : public ofBaseApp{
         deque< pair<string,string> > myMessages;
         ofImage creditImage;
         deque<ofImage> introImages;
+        ofTrueTypeFont myFont;
+        long long int nowMillis, lastStateChangeMillis, startMillis;
+        int currentFadeValue;
+        ofFbo fboTitle, fboCanvas;
         void loadIntroImages(string filenamePrefix);
 };

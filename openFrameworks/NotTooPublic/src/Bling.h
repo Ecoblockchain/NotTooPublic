@@ -13,13 +13,10 @@ class Bling : public NotTooPublic{
         const int FADE_DELTA = 5;
         const float INITIAL_NOISE_SCALE = 900;
         float noiseScale;
-        long long int nowMillis, lastStateChangeMillis, startMillis;
         enum State {STATE_INTRO, STATE_BLANK, STATE_GOLD, STATE_PAUSE, STATE_DIAMOND, STATE_OUTRO};
         State currentState;
-        int currentFadeValue, blingFadeValue;
+        int blingFadeValue;
         ofColor blingColor;
-        ofFbo fboTitle, fboCanvas;
         string currentMessage;
         vector<ofPath> currentMessagePath;
-        ofTrueTypeFont myFont;
 };
