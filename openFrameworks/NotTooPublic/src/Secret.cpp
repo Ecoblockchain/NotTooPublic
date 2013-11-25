@@ -10,6 +10,8 @@ void Secret::setup(){
     fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
     fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
 
+    loadTitleFbo("SecretTweetAt");
+
     fboTitle.begin();
     ofEnableSmoothing();
     ofEnableAlphaBlending();
@@ -149,33 +151,11 @@ void Secret::update(){
 
     ///// actual drawings
     if(currentState == STATE_INTRO){
-        fboCanvas.begin();
-        ofEnableAlphaBlending();
-        ofBackground(0);
-        ofSetColor(255);
-        ofPushMatrix();
-        float scaleVal = min(fboCanvas.getWidth()/introImages.front().width, fboCanvas.getHeight()/introImages.front().height);
-        creditImage.resize(scaleVal*introImages.front().width, scaleVal*introImages.front().height);
-        ofTranslate((fboCanvas.getWidth()-introImages.front().width)/2, (fboCanvas.getHeight()-introImages.front().height)/2);
-        introImages.front().draw(0,0);
-        ofPopMatrix();
-        ofDisableAlphaBlending();
-        fboCanvas.end();
+        drawIntro();
     }
 
     if(currentState == STATE_OUTRO){
-        fboCanvas.begin();
-        ofEnableAlphaBlending();
-        ofBackground(0);
-        ofSetColor(255);
-        ofPushMatrix();
-        float scaleVal = min(fboCanvas.getWidth()/creditImage.width, fboCanvas.getHeight()/creditImage.height);
-        creditImage.resize(scaleVal*creditImage.width, scaleVal*creditImage.height);
-        ofTranslate((fboCanvas.getWidth()-creditImage.width)/2, (fboCanvas.getHeight()-creditImage.height)/2);
-        creditImage.draw(0,0);
-        ofPopMatrix();
-        ofDisableAlphaBlending();
-        fboCanvas.end();
+        drawCredits();
     }
 
     if(currentState == STATE_MESSAGE){

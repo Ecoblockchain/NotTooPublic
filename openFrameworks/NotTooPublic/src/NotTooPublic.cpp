@@ -56,6 +56,40 @@ void NotTooPublic::loadIntroImages(string filenamePrefix){
     }
 }
 
+void NotTooPublic::loadTitleFbo(string filenamePrefix){
+
+}
+
+void NotTooPublic::drawIntro(){
+    fboCanvas.begin();
+    ofEnableAlphaBlending();
+    ofBackground(0);
+    ofSetColor(255);
+    ofPushMatrix();
+    float scaleVal = min(fboCanvas.getWidth()/introImages.front().width, fboCanvas.getHeight()/introImages.front().height);
+    introImages.front().resize(scaleVal*introImages.front().width, scaleVal*introImages.front().height);
+    ofTranslate((fboCanvas.getWidth()-introImages.front().width)/2, (fboCanvas.getHeight()-introImages.front().height)/2);
+    introImages.front().draw(0,0);
+    ofPopMatrix();
+    ofDisableAlphaBlending();
+    fboCanvas.end();
+}
+void NotTooPublic::drawCredits(){
+    fboCanvas.begin();
+    ofEnableAlphaBlending();
+    ofBackground(0);
+    ofSetColor(255);
+    ofPushMatrix();
+    float scaleVal = min(fboCanvas.getWidth()/creditImage.width, fboCanvas.getHeight()/creditImage.height);
+    creditImage.resize(scaleVal*creditImage.width, scaleVal*creditImage.height);
+    ofTranslate((fboCanvas.getWidth()-creditImage.width)/2, (fboCanvas.getHeight()-creditImage.height)/2);
+    creditImage.draw(0,0);
+    ofPopMatrix();
+    ofDisableAlphaBlending();
+    fboCanvas.end();
+}
+
+
 //--------------------------------------------------------------
 void NotTooPublic::draw(){
 }
