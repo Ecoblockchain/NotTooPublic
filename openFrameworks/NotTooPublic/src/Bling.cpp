@@ -12,12 +12,10 @@ void Bling::setup(){
     loadIntroImages("BlingTitle");
     loadTitleFbo("BlingTweetAt.png");
 
-    currentMessage = "Not\nToo\nPublic";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
-    currentMessage = "Tell me\nsomething\nGoood...";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
-    currentMessage = "I am\nfucking\nAwesome!";
-    myMessages.push_back(pair<string,string>(currentMessage, currentMessage));
+    // TEST/DEBUG
+    myMessages.push_back(pair<string,string>("Not\nToo\nPublic", "CC II NN"));
+    myMessages.push_back(pair<string,string>("Tell me\nsomething\nGoood", "VBN CN NN JJ"));
+    myMessages.push_back(pair<string,string>("I am\nfucking\nAwesome!", "PP VB AJ JJ"));
 }
 
 void Bling::update(){
