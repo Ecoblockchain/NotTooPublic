@@ -2,7 +2,7 @@
 
 void Secret::setup(){
     NotTooPublic::setup();
-    myFont.loadFont("TrajanPro-Regular.ttf",100,true,true,true);
+    myFont.loadFont(myFontName,100,true,true,true);
     numWordsPlaced = 0;
     currentImportantWordIndex = -1;
     currentState = STATE_INTRO;
@@ -89,6 +89,11 @@ void Secret::update(){
                     currentImportantWordIndex = i;
                 }
             }
+
+            // resize font
+            float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
+            myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+
             currentState = STATE_MESSAGE;
             lastStateChangeMillis = nowMillis;
         }
@@ -142,17 +147,16 @@ void Secret::update(){
             float xoff = max(myFont.stringWidth("I"),
                              min(abs((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2), myFont.stringWidth(currentMessage.at(i))/2));
             ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2,
-                        (i+1)*myFont.getLineHeight());
+                        i*myFont.getLineHeight()+myFont.stringHeight("P"));
             if(ofRandom(1) < 0.5){
-                // place legible words
+                ofSetColor(255, 4);
+                myFont.drawString(currentMessage.at(i), ofRandom(-xoff, xoff), 0);
+
+                // place some legible words
                 if((numWordsPlaced > 450) && (numWordsPlaced < 500) && (currentImportantWordIndex != i)){
                     ofSetColor(255, 8);
                     myFont.drawString(currentMessage.at(i), 0, 0);
                 }
-                //else {
-                    ofSetColor(255, 4);
-                    myFont.drawString(currentMessage.at(i), ofRandom(-xoff, xoff), 0);
-                //}
             }
             ofPopMatrix();
         }

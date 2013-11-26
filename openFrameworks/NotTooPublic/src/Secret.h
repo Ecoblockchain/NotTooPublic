@@ -9,6 +9,7 @@ class Secret : public NotTooPublic{
         void draw();
     private:
         const int FADE_DELTA = 5;
+        const string myFontName = "TrajanPro-Regular.ttf";
         enum State {STATE_INTRO, STATE_BLANK, STATE_MESSAGE, STATE_OUTRO};
         State currentState;
         int numWordsPlaced;
