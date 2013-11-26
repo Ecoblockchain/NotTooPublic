@@ -13,7 +13,10 @@ void Secret::setup(){
     loadIntroImages("SecretTitle");
     loadTitleFbo("SecretTweetAt.png");
 
+    // TEST/DEBUG
     myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
+    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
+    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 void Secret::update(){
