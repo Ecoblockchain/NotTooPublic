@@ -2,7 +2,7 @@
 
 void Bling::setup(){
     NotTooPublic::setup();
-    myFont.loadFont("Garamond-Regular.ttf",100,true,true,true);
+    myFont.loadFont(myFontName,100,true,true,true);
     noiseScale = INITIAL_NOISE_SCALE;
     currentState = STATE_INTRO;
 
@@ -13,9 +13,9 @@ void Bling::setup(){
     loadTitleFbo("BlingTweetAt.png");
 
     // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Not\nToo\nPublic", "CC II NN"));
-    myMessages.push_back(pair<string,string>("Tell me\nsomething\nGoood", "VBN CN NN JJ"));
-    myMessages.push_back(pair<string,string>("I am\nfucking\nAwesome!", "PP VB AJ JJ"));
+    myMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
+    myMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
+    myMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
 }
 
 void Bling::update(){
@@ -64,6 +64,22 @@ void Bling::update(){
         else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
             currentMessage = myMessages.front().first;
             myMessages.pop_front();
+
+            // resize font and format string
+            float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
+            float newFontSize = (float)(myFont.getSize())*fontScale;
+            myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+            int numberOfLines = (int)(ceil(0.5*fboCanvas.getHeight()/myFont.getLineHeight()));
+
+            for(int i=1; i<numberOfLines; i++){
+                int sp = currentMessage.find(" ",(i*currentMessage.size()/numberOfLines));
+                if(sp != string::npos){
+                    currentMessage.replace(sp,1,"\n");
+                }
+            }
+            currentMessageScaling = min(0.5*fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
+                                        0.5*fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
+
             currentMessagePath = myFont.getStringAsPoints(currentMessage);
             currentState = STATE_GOLD;
             noiseScale = INITIAL_NOISE_SCALE;
@@ -128,6 +144,7 @@ void Bling::update(){
         ofPushMatrix();
         ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
                     (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
         ofSetLineWidth(2);
         ofSetColor(255,(int)ofMap(nowMillis - lastStateChangeMillis, 1500, 3000, 0, 128,true));
         ofNoFill();
@@ -171,6 +188,7 @@ void Bling::update(){
         ofPushMatrix();
         ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
                     (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
         ofSetLineWidth(2);
         for(int i=0; i<currentMessagePath.size(); i++){
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
