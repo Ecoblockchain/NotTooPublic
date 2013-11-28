@@ -15,6 +15,8 @@ int main(int argc, char* argv[]){
         ofRunApp( new Bling());
     else if((argc > 1) && !string(argv[1]).compare("-s"))
         ofRunApp( new Secret());
+    else if((argc > 1) && !string(argv[1]).compare("-w"))
+        ofRunApp( new Wish());
     else
         ofRunApp( new Wish());
 }
