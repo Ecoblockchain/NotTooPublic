@@ -21,8 +21,9 @@
 		AF1DBBBD18401A0A0099C448 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF1DBBAE18401A0A0099C448 /* ofxOscSender.cpp */; };
 		AF1DBBC018401B3B0099C448 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF1DBBBE18401B2A0099C448 /* GLUT.framework */; };
 		AF1DBBC118401B5A0099C448 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF1DBBBE18401B2A0099C448 /* GLUT.framework */; };
-		AF1DBBCF184025410099C448 /* openFrameworks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF1DBBC9184024AD0099C448 /* openFrameworks.a */; };
+		AF1DBBCF184025410099C448 /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF1DBBC9184024AD0099C448 /* openFrameworksDebug.a */; };
 		AF561CFF176E56EF003D16B0 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF561CFE176E56EF003D16B0 /* IOKit.framework */; };
+		AF901490184727B200E264F0 /* Wish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF90148E184727B200E264F0 /* Wish.cpp */; };
 		AF9E5CE916CDCE6700FD0992 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF9E5CE416CDCE6700FD0992 /* main.cpp */; };
 		AFCCA4631841865D00E855E5 /* NotTooPublic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFCCA4611841865D00E855E5 /* NotTooPublic.cpp */; };
 		AFCCA46A1841DFAE00E855E5 /* Bling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFCCA4681841DFAE00E855E5 /* Bling.cpp */; };
@@ -102,6 +103,8 @@
 		AF1DBBBE18401B2A0099C448 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../../../../Dev/openFrameworks/export/osx/Frameworks/GLUT.framework; sourceTree = "<group>"; };
 		AF1DBBC4184024AD0099C448 /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../../../../Dev/openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = "<group>"; };
 		AF561CFE176E56EF003D16B0 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		AF90148E184727B200E264F0 /* Wish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wish.cpp; sourceTree = "<group>"; };
+		AF90148F184727B200E264F0 /* Wish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wish.h; sourceTree = "<group>"; };
 		AF9E5CE316CDCE3A00FD0992 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		AF9E5CE416CDCE6700FD0992 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AFCCA4611841865D00E855E5 /* NotTooPublic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NotTooPublic.cpp; sourceTree = "<group>"; };
@@ -133,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF1DBBCF184025410099C448 /* openFrameworks.a in Frameworks */,
+				AF1DBBCF184025410099C448 /* openFrameworksDebug.a in Frameworks */,
 				AF1DBBC118401B5A0099C448 /* GLUT.framework in Frameworks */,
 				AF561CFF176E56EF003D16B0 /* IOKit.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
@@ -255,7 +258,7 @@
 		AF1DBBC5184024AD0099C448 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AF1DBBC9184024AD0099C448 /* openFrameworks.a */,
+				AF1DBBC9184024AD0099C448 /* openFrameworksDebug.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -330,6 +333,8 @@
 				AFCCA4691841DFAE00E855E5 /* Bling.h */,
 				AFCCA46E1842413100E855E5 /* Secret.cpp */,
 				AFCCA46F1842413100E855E5 /* Secret.h */,
+				AF90148E184727B200E264F0 /* Wish.cpp */,
+				AF90148F184727B200E264F0 /* Wish.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -397,10 +402,9 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		AF1DBBC9184024AD0099C448 /* openFrameworks.a */ = {
+		AF1DBBC9184024AD0099C448 /* openFrameworksDebug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			name = openFrameworks.a;
 			path = openFrameworksDebug.a;
 			remoteRef = AF1DBBC8184024AD0099C448 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -444,6 +448,7 @@
 				AFCCA46A1841DFAE00E855E5 /* Bling.cpp in Sources */,
 				AFCCA4631841865D00E855E5 /* NotTooPublic.cpp in Sources */,
 				AF1DBBB918401A0A0099C448 /* ofxOscBundle.cpp in Sources */,
+				AF901490184727B200E264F0 /* Wish.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
