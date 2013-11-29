@@ -13,17 +13,9 @@ void Wish::setup(){
 
     loadIntroImages("WishTitle");
     loadTitleFbo("WishTweetAt.png");
-
-    // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
-    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
-    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 void Wish::handleNewMessage(){
-    currentMessage = myMessages.front().first;
-    myMessages.pop_front();
-
     // resize font and format string
     float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
     float newFontSize = (float)(myFont.getSize())*fontScale;

@@ -9,7 +9,6 @@ class Wish : public NotTooPublic{
         void draw();
     private:
         const string myFontName = "cooperBlack.ttf";
-        string currentMessage;
         vector<ofPath> currentMessagePath;
         float currentMessageScaling;
         int currentMessagePoints;

@@ -12,30 +12,21 @@ void Secret::setup(){
 
     loadIntroImages("SecretTitle");
     loadTitleFbo("SecretTweetAt.png");
-
-    // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
-    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
-    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 void Secret::handleNewMessage(){
     // tokenize strings
     currentMessageTokens.clear();
-    istringstream iss(myMessages.front().first);
+    istringstream iss(currentMessage);
     copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessageTokens));
     iss.clear();
     vector<string> currentMessagePosTags;
-    iss.str(myMessages.front().second);
+    iss.str(currentPosTags);
     copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessagePosTags));
 
     // push PDT between messages
-    if(myMessages.front().first.compare("Please Don't Tell") != 0){
-        myMessages.pop_front();
+    if(currentMessage.compare("Please Don't Tell") != 0){
         myMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
-    }
-    else{
-        myMessages.pop_front();
     }
 
     // figure out most important word

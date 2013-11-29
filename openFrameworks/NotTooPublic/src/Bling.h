@@ -15,7 +15,6 @@ class Bling : public NotTooPublic{
         float noiseScale;
         int blingFadeValue;
         ofColor blingColor;
-        string currentMessage;
         float currentMessageScaling;
         vector<ofPath> currentMessagePath;
         void handleNewMessage();

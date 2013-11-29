@@ -27,6 +27,14 @@ void NotTooPublic::setup(){
     fboCanvas.begin();
     ofEnableSmoothing();
     fboCanvas.end();
+
+    // TEST/DEBUG
+    myMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
+    myMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
+    myMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
+    myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
+    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
+    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 //--------------------------------------------------------------
@@ -163,6 +171,9 @@ void NotTooPublic::stateLogicBlank(){
         lastStateChangeMillis = nowMillis;
     }
     else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
+        currentMessage = myMessages.front().first;
+        currentPosTags = myMessages.front().second;
+        myMessages.pop_front();
         handleNewMessage();
     }
 }

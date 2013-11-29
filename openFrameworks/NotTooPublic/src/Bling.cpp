@@ -11,17 +11,9 @@ void Bling::setup(){
 
     loadIntroImages("BlingTitle");
     loadTitleFbo("BlingTweetAt.png");
-
-    // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
-    myMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
-    myMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
 }
 
 void Bling::handleNewMessage(){
-    currentMessage = myMessages.front().first;
-    myMessages.pop_front();
-
     // resize font and format string
     float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
     float newFontSize = (float)(myFont.getSize())*fontScale;
