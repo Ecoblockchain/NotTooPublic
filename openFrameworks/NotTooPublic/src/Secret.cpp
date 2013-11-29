@@ -69,6 +69,7 @@ void Secret::update(){
     }
     else if(currentState == STATE_BLANK){
         stateLogicBlank();
+        numWordsPlaced = 0;
     }
     else if(currentState == STATE_MESSAGE) {
         if(numWordsPlaced > 720){
@@ -81,7 +82,6 @@ void Secret::update(){
             ofDisableAlphaBlending();
             fboCanvas.end();
             currentFadeValue = 0;
-            numWordsPlaced = 0;
             currentState = STATE_BLANK;
             lastStateChangeMillis = nowMillis;
         }

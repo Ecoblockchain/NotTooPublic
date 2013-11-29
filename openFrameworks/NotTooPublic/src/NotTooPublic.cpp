@@ -180,6 +180,16 @@ void NotTooPublic::draw(){
 
 //--------------------------------------------------------------
 void NotTooPublic::keyPressed(int key){
+    if(key == ' '){
+        fboCanvas.begin();
+        ofEnableAlphaBlending();
+        ofBackground(0);
+        ofDisableAlphaBlending();
+        fboCanvas.end();
+        currentFadeValue = 0;
+        currentState = STATE_BLANK;
+        lastStateChangeMillis = nowMillis;
+    }
 }
 
 //--------------------------------------------------------------
