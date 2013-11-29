@@ -26,7 +26,12 @@ void Secret::handleNewMessage(){
 
     // push PDT between messages
     if(currentMessage.compare("Please Don't Tell") != 0){
-        myMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
+        if(newMessages.size() > 0){
+            newMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
+        }
+        else{
+            oldMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
+        }
     }
 
     // figure out most important word

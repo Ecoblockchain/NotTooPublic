@@ -29,12 +29,12 @@ void NotTooPublic::setup(){
     fboCanvas.end();
 
     // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
-    myMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
-    myMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
-    myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
-    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
-    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
+    newMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
+    newMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
+    newMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
+    newMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
+    newMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
+    newMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 //--------------------------------------------------------------
@@ -43,7 +43,7 @@ void NotTooPublic::update(){
 	while(myOscReceiver.hasWaitingMessages()){
 		myOscReceiver.getNextMessage(&myOscMessage);
 		if(myOscMessage.getAddress().compare("/NotTooPublic/message") == 0){
-            myMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
+            newMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
 		}
     }
     nowMillis = ofGetElapsedTimeMillis();
@@ -170,10 +170,19 @@ void NotTooPublic::stateLogicBlank(){
         currentState = STATE_OUTRO;
         lastStateChangeMillis = nowMillis;
     }
-    else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
-        currentMessage = myMessages.front().first;
-        currentPosTags = myMessages.front().second;
-        myMessages.pop_front();
+    else if(nowMillis - lastStateChangeMillis > 1000){
+        if(newMessages.size() > 0){
+            currentMessage = newMessages.front().first;
+            currentPosTags = newMessages.front().second;
+            oldMessages.push_back(newMessages.front());
+            newMessages.pop_front();
+        }
+        else{
+            currentMessage = oldMessages.front().first;
+            currentPosTags = oldMessages.front().second;
+            oldMessages.push_back(oldMessages.front());
+            oldMessages.pop_front();
+        }
         handleNewMessage();
     }
 }

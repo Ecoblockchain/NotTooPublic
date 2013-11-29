@@ -23,7 +23,7 @@ class NotTooPublic : public ofBaseApp{
         const int FADE_DELTA = 5;
         ofxOscReceiver myOscReceiver;
         ofxOscMessage myOscMessage;
-        deque< pair<string,string> > myMessages;
+        deque< pair<string,string> > oldMessages, newMessages;
         ofImage creditImage;
         deque<ofImage> introImages;
         ofTrueTypeFont myFont;
