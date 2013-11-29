@@ -18,6 +18,31 @@ void Bling::setup(){
     myMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
 }
 
+void Bling::handleNewMessage(){
+    currentMessage = myMessages.front().first;
+    myMessages.pop_front();
+
+    // resize font and format string
+    float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
+    float newFontSize = (float)(myFont.getSize())*fontScale;
+    myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+    int numberOfLines = (int)(ceil(0.5*fboCanvas.getHeight()/myFont.getLineHeight()));
+
+    for(int i=1; i<numberOfLines; i++){
+        int sp = currentMessage.find(" ",(i*currentMessage.size()/numberOfLines));
+        if(sp != string::npos){
+            currentMessage.replace(sp,1,"\n");
+        }
+    }
+    currentMessageScaling = min(0.5*fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
+                                0.5*fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
+
+    currentMessagePath = myFont.getStringAsPoints(currentMessage);
+    currentState = STATE_GOLD;
+    noiseScale = INITIAL_NOISE_SCALE;
+    lastStateChangeMillis = nowMillis;
+}
+
 void Bling::update(){
     NotTooPublic::update();
 
@@ -25,42 +50,7 @@ void Bling::update(){
         stateLogicIntro();
     }
     else if(currentState == STATE_BLANK){
-        if(currentFadeValue < 0){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
-        }
-        else if(currentFadeValue > 0){
-            currentFadeValue = 0;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
-            currentFadeValue = -255;
-            currentState = STATE_OUTRO;
-            lastStateChangeMillis = nowMillis;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
-            currentMessage = myMessages.front().first;
-            myMessages.pop_front();
-
-            // resize font and format string
-            float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
-            float newFontSize = (float)(myFont.getSize())*fontScale;
-            myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
-            int numberOfLines = (int)(ceil(0.5*fboCanvas.getHeight()/myFont.getLineHeight()));
-
-            for(int i=1; i<numberOfLines; i++){
-                int sp = currentMessage.find(" ",(i*currentMessage.size()/numberOfLines));
-                if(sp != string::npos){
-                    currentMessage.replace(sp,1,"\n");
-                }
-            }
-            currentMessageScaling = min(0.5*fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
-                                        0.5*fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
-
-            currentMessagePath = myFont.getStringAsPoints(currentMessage);
-            currentState = STATE_GOLD;
-            noiseScale = INITIAL_NOISE_SCALE;
-            lastStateChangeMillis = nowMillis;
-        }
+        stateLogicBlank();
     }
     else if(currentState == STATE_GOLD){
         if((nowMillis - lastStateChangeMillis > 2000) && (noiseScale < 128)){

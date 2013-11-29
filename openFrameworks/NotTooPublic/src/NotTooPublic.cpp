@@ -149,6 +149,24 @@ void NotTooPublic::stateLogicOutro(){
     }
 }
 
+void NotTooPublic::stateLogicBlank(){
+    if(currentFadeValue < 0){
+        lastStateChangeMillis = nowMillis;
+        currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
+    }
+    else if(currentFadeValue > 0){
+        currentFadeValue = 0;
+    }
+    else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
+        currentFadeValue = -255;
+        currentState = STATE_OUTRO;
+        lastStateChangeMillis = nowMillis;
+    }
+    else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
+        handleNewMessage();
+    }
+}
+
 //--------------------------------------------------------------
 void NotTooPublic::draw(){
     ofBackground(0);

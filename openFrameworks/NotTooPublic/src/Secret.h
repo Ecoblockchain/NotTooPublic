@@ -12,4 +12,5 @@ class Secret : public NotTooPublic{
         int numWordsPlaced;
         vector<string> currentMessage;
         int currentImportantWordIndex;
+        void handleNewMessage();
 };

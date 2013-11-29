@@ -19,6 +19,45 @@ void Secret::setup(){
     myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
+void Secret::handleNewMessage(){
+    // tokenize strings
+    currentMessage.clear();
+    istringstream iss(myMessages.front().first);
+    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessage));
+    iss.clear();
+    vector<string> currentMessagePosTags;
+    iss.str(myMessages.front().second);
+    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessagePosTags));
+
+    // push PDT between messages
+    if(myMessages.front().first.compare("Please Don't Tell") != 0){
+        myMessages.pop_front();
+        myMessages.push_front(pair<string,string>("Please Don't Tell", ""));
+    }
+    else{
+        myMessages.pop_front();
+    }
+
+    // figure out most important word (largest noun or verb)
+    currentImportantWordIndex = -1;
+    int largestImportantWordSize = 0;
+    for(int i=0; (currentMessage.size() == currentMessagePosTags.size())&&(i<currentMessage.size()); i++){
+        if(((currentMessagePosTags.at(i).compare(0,2,"NN") &&
+             currentMessagePosTags.at(i).compare(0,2,"VB")) == 0) &&
+           (currentMessage.at(i).size() > largestImportantWordSize)){
+            largestImportantWordSize = currentMessage.at(i).size();
+            currentImportantWordIndex = i;
+        }
+    }
+
+    // resize font
+    float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
+    myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+
+    currentState = STATE_MESSAGE;
+    lastStateChangeMillis = nowMillis;
+}
+
 void Secret::update(){
     NotTooPublic::update();
 
@@ -26,56 +65,7 @@ void Secret::update(){
         stateLogicIntro();
     }
     else if(currentState == STATE_BLANK){
-        if(currentFadeValue < 0){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
-        }
-        else if(currentFadeValue > 0){
-            currentFadeValue = 0;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
-            currentFadeValue = -255;
-            currentState = STATE_OUTRO;
-            lastStateChangeMillis = nowMillis;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
-            // tokenize strings
-            currentMessage.clear();
-            istringstream iss(myMessages.front().first);
-            copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessage));
-            iss.clear();
-            vector<string> currentMessagePosTags;
-            iss.str(myMessages.front().second);
-            copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessagePosTags));
-
-            // push PDT between messages
-            if(myMessages.front().first.compare("Please Don't Tell") != 0){
-                myMessages.pop_front();
-                myMessages.push_front(pair<string,string>("Please Don't Tell", ""));
-            }
-            else{
-                myMessages.pop_front();
-            }
-
-            // figure out most important word (largest noun or verb)
-            currentImportantWordIndex = -1;
-            int largestImportantWordSize = 0;
-            for(int i=0; (currentMessage.size() == currentMessagePosTags.size())&&(i<currentMessage.size()); i++){
-                if(((currentMessagePosTags.at(i).compare(0,2,"NN") &&
-                    currentMessagePosTags.at(i).compare(0,2,"VB")) == 0) &&
-                   (currentMessage.at(i).size() > largestImportantWordSize)){
-                    largestImportantWordSize = currentMessage.at(i).size();
-                    currentImportantWordIndex = i;
-                }
-            }
-
-            // resize font
-            float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
-            myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
-
-            currentState = STATE_MESSAGE;
-            lastStateChangeMillis = nowMillis;
-        }
+        stateLogicBlank();
     }
     else if(currentState == STATE_MESSAGE) {
         if(numWordsPlaced > 720){

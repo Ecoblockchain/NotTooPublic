@@ -39,4 +39,6 @@ class NotTooPublic : public ofBaseApp{
         void drawCredits();
         void stateLogicIntro();
         void stateLogicOutro();
+        void stateLogicBlank();
+        virtual void handleNewMessage()=0;
 };

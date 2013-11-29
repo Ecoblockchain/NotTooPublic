@@ -18,4 +18,5 @@ class Bling : public NotTooPublic{
         string currentMessage;
         float currentMessageScaling;
         vector<ofPath> currentMessagePath;
+        void handleNewMessage();
 };

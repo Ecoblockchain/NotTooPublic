@@ -20,6 +20,20 @@ void Wish::setup(){
     myMessages.push_back(pair<string,string>("I had sex\nwith my boss's\nwife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
+void Wish::handleNewMessage(){
+    currentMessage = myMessages.front().first;
+    myMessages.pop_front();
+
+    // TODO: resize font
+    //float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
+    //myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+
+    currentMessagePath = myFont.getStringAsPoints(currentMessage);
+    currentDistance = originalDistance;
+    currentState = STATE_SPERM;
+    lastStateChangeMillis = nowMillis;
+}
+
 void Wish::update(){
     NotTooPublic::update();
 
@@ -27,32 +41,7 @@ void Wish::update(){
         stateLogicIntro();
     }
     else if(currentState == STATE_BLANK){
-        if(currentFadeValue < 0){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
-        }
-        else if(currentFadeValue > 0){
-            currentFadeValue = 0;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
-            currentFadeValue = -255;
-            currentState = STATE_OUTRO;
-            lastStateChangeMillis = nowMillis;
-        }
-        else if((nowMillis - lastStateChangeMillis > 1000) && (!myMessages.empty())){
-            // tokenize strings
-            currentMessage = myMessages.front().first;
-            myMessages.pop_front();
-
-            // TODO: resize font
-            //float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
-            //myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
-
-            currentMessagePath = myFont.getStringAsPoints(currentMessage);
-            currentDistance = originalDistance;
-            currentState = STATE_SPERM;
-            lastStateChangeMillis = nowMillis;
-        }
+        stateLogicBlank();
     }
     else if(currentState == STATE_SPERM) {
         if(currentDistance <= 0.0){
