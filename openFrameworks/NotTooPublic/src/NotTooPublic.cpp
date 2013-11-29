@@ -29,12 +29,7 @@ void NotTooPublic::setup(){
     fboCanvas.end();
 
     // TEST/DEBUG
-    newMessages.push_back(pair<string,string>("Not Too Public", "CC II NN"));
-    newMessages.push_back(pair<string,string>("Tell me something Goood", "VBN CN NN JJ"));
-    newMessages.push_back(pair<string,string>("I am fucking Awesome!", "PP VB AJ JJ"));
-    newMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
-    newMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
-    newMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
+    newMessages.push_back(pair<string,string>("Not Too Public", "RB RB JJ"));
 }
 
 //--------------------------------------------------------------
