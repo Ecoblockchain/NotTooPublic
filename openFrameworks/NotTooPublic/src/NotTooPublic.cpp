@@ -176,6 +176,10 @@ void NotTooPublic::draw(){
     }
     ofSetColor(255-abs(currentFadeValue));
     fboCanvas.draw(0, fboTitle.getHeight());
+
+    // TEST/DEBUG
+    ofSetColor(255);
+    ofDrawBitmapString(ofToString(ofGetFrameRate()), 0,30);
 }
 
 //--------------------------------------------------------------
