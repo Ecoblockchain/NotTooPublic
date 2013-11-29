@@ -121,14 +121,14 @@ void Wish::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofFill();
-        ofSetColor(0, 32);
+        ofSetColor(0, 64);
         ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
         ofScale(currentMessageScaling, currentMessageScaling);
         ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
                     (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
 
-        ofNoFill();
+        ofFill();
         for(int i=0; i<currentMessagePath.size(); i++){
             ofVec3f center = currentMessagePath.at(i).getTessellation().getCentroid();
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
@@ -137,8 +137,7 @@ void Wish::update(){
                     ofVec3f direction = (tp-center).normalize();
                     tp += direction*max(0.0f,currentDistance);
                     if(!(k%(int)ceil(currentMessagePoints/1000.0f))){
-                        ofSetColor(255);
-                        int complexity = 16;
+                        int complexity = 4;
                         float magnitude = 8.0f;
                         float dx = ofNoise(complexity*tp.x/fboCanvas.getWidth()+PI,
                                            complexity*tp.y/fboCanvas.getHeight()+PI,
@@ -147,7 +146,8 @@ void Wish::update(){
                                            complexity*tp.y/fboCanvas.getHeight()-PI,
                                            (float)(ofGetFrameNum())/130.0f-PI);
                         float a = magnitude*ofNoise(dy,dx,(float)(ofGetFrameNum())/100.0f);
-                        ofCircle(tp.x-a+2*a*dx, tp.y-a+2*a*dy, 0.2);
+                        ofSetColor(255);
+                        ofCircle(tp.x-a+2*a*dx, tp.y-a+2*a*dy, 1.0);
                     }
                 }
             }
