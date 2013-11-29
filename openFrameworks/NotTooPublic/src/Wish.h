@@ -11,6 +11,7 @@ class Wish : public NotTooPublic{
         const string myFontName = "cooperBlack.ttf";
         string currentMessage;
         vector<ofPath> currentMessagePath;
+        float currentMessageScaling;
         float currentDistance, originalDistance;
         void handleNewMessage();
 };

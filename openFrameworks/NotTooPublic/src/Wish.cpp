@@ -15,18 +15,29 @@ void Wish::setup(){
     loadTitleFbo("WishTweetAt.png");
 
     // TEST/DEBUG
-    myMessages.push_back(pair<string,string>("Do not\ntake cakes", "NN VBN VB NNP"));
-    myMessages.push_back(pair<string,string>("Ko has\ntons of\nunderwear", "NN VBI NN JJ NN"));
-    myMessages.push_back(pair<string,string>("I had sex\nwith my boss's\nwife for money", "II VBP NN CN MM NN NN CC NN"));
+    myMessages.push_back(pair<string,string>("Do not take cakes", "NN VBN VB NNP"));
+    myMessages.push_back(pair<string,string>("Ko has tons of underwear", "NN VBI NN JJ NN"));
+    myMessages.push_back(pair<string,string>("I had sex with my boss's wife for money", "II VBP NN CN MM NN NN CC NN"));
 }
 
 void Wish::handleNewMessage(){
     currentMessage = myMessages.front().first;
     myMessages.pop_front();
 
-    // TODO: resize font
-    //float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
-    //myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+    // resize font and format string
+    float fontScale = 0.5*sqrt((fboCanvas.getHeight()*fboCanvas.getWidth())/(myFont.getLineHeight()*myFont.stringWidth(currentMessage)));
+    float newFontSize = (float)(myFont.getSize())*fontScale;
+    myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
+    int numberOfLines = (int)(ceil(0.5*fboCanvas.getHeight()/myFont.getLineHeight()));
+
+    for(int i=1; i<numberOfLines; i++){
+        int sp = currentMessage.find(" ",(i*currentMessage.size()/numberOfLines));
+        if(sp != string::npos){
+            currentMessage.replace(sp,1,"\n");
+        }
+    }
+    currentMessageScaling = 0.8*min(fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
+                                    fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
     currentDistance = originalDistance;
@@ -103,8 +114,9 @@ void Wish::update(){
         ofSetColor(0, 32);
         ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
 
         ofNoFill();
         for(int i=0; i<currentMessagePath.size(); i++){
@@ -143,8 +155,9 @@ void Wish::update(){
         ofSetColor(0, 8);
         //ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
 
         ofNoFill();
         ofSetColor(255,8);
@@ -174,8 +187,9 @@ void Wish::update(){
         ofSetColor(0, 32);
         ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
 
         ofNoFill();
         ofSetLineWidth(1.5);
@@ -208,8 +222,9 @@ void Wish::update(){
         ofSetColor(0, 32);
         ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+        ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
 
         ofNoFill();
         ofSetLineWidth(1.5);
