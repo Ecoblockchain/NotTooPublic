@@ -40,7 +40,7 @@ void Wish::handleNewMessage(){
                                     fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
-    currentDistance = originalDistance;
+    currentDistance = 0.9*originalDistance/currentMessageScaling;
     currentState = STATE_SPERM;
     lastStateChangeMillis = nowMillis;
 }
