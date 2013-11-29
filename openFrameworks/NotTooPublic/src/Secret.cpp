@@ -32,18 +32,21 @@ void Secret::handleNewMessage(){
     // push PDT between messages
     if(myMessages.front().first.compare("Please Don't Tell") != 0){
         myMessages.pop_front();
-        myMessages.push_front(pair<string,string>("Please Don't Tell", ""));
+        myMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
     }
     else{
         myMessages.pop_front();
     }
 
-    // figure out most important word (largest noun or verb)
+    // figure out most important word
+    // largest noun or verb if posTags are good
+    // largest word otherwise
     currentImportantWordIndex = -1;
     int largestImportantWordSize = 0;
-    for(int i=0; (currentMessage.size() == currentMessagePosTags.size())&&(i<currentMessage.size()); i++){
-        if(((currentMessagePosTags.at(i).compare(0,2,"NN") &&
-             currentMessagePosTags.at(i).compare(0,2,"VB")) == 0) &&
+    for(int i=0; i<currentMessage.size(); i++){
+        if(((currentMessage.size() != currentMessagePosTags.size()) ||
+            (currentMessagePosTags.at(i).compare(0,2,"NN") == 0) ||
+            (currentMessagePosTags.at(i).compare(0,2,"VB") == 0)) &&
            (currentMessage.at(i).size() > largestImportantWordSize)){
             largestImportantWordSize = currentMessage.at(i).size();
             currentImportantWordIndex = i;
