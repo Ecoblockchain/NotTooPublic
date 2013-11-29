@@ -10,7 +10,8 @@ class Secret : public NotTooPublic{
     private:
         const string myFontName = "TrajanPro-Regular.ttf";
         int numWordsPlaced;
-        vector<string> currentMessage;
+        string currentMessage;
+        vector<string> currentMessageTokens;
         int currentImportantWordIndex;
         void handleNewMessage();
 };

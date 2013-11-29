@@ -21,9 +21,9 @@ void Secret::setup(){
 
 void Secret::handleNewMessage(){
     // tokenize strings
-    currentMessage.clear();
+    currentMessageTokens.clear();
     istringstream iss(myMessages.front().first);
-    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessage));
+    copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessageTokens));
     iss.clear();
     vector<string> currentMessagePosTags;
     iss.str(myMessages.front().second);
@@ -43,18 +43,18 @@ void Secret::handleNewMessage(){
     // largest word otherwise
     currentImportantWordIndex = -1;
     int largestImportantWordSize = 0;
-    for(int i=0; i<currentMessage.size(); i++){
-        if(((currentMessage.size() != currentMessagePosTags.size()) ||
+    for(int i=0; i<currentMessageTokens.size(); i++){
+        if(((currentMessageTokens.size() != currentMessagePosTags.size()) ||
             (currentMessagePosTags.at(i).compare(0,2,"NN") == 0) ||
             (currentMessagePosTags.at(i).compare(0,2,"VB") == 0)) &&
-           (currentMessage.at(i).size() > largestImportantWordSize)){
-            largestImportantWordSize = currentMessage.at(i).size();
+           (currentMessageTokens.at(i).size() > largestImportantWordSize)){
+            largestImportantWordSize = currentMessageTokens.at(i).size();
             currentImportantWordIndex = i;
         }
     }
 
     // resize font
-    float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessage.size();
+    float newFontSize = (float)(myFont.getSize())*fboCanvas.getHeight()/myFont.getLineHeight()/currentMessageTokens.size();
     myFont.loadFont(myFontName,(int)newFontSize,true,true,true);
 
     currentState = STATE_MESSAGE;
@@ -102,25 +102,26 @@ void Secret::update(){
     if(currentState == STATE_MESSAGE){
         fboCanvas.begin();
         ofEnableAlphaBlending();
-        for(int i=0; i<currentMessage.size(); i++){
+        for(int i=0; i<currentMessageTokens.size(); i++){
             ofPushMatrix();
             float xoff = max(myFont.stringWidth("I"),
-                             min(abs((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2), myFont.stringWidth(currentMessage.at(i))/2));
-            ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2,
+                             min(abs((ofGetWidth()-myFont.stringWidth(currentMessageTokens.at(i)))/2),
+                                 myFont.stringWidth(currentMessageTokens.at(i))/2));
+            ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessageTokens.at(i)))/2,
                         i*myFont.getLineHeight()+myFont.stringHeight("P"));
             if(ofRandom(1) < 0.4){
                 ofSetColor(255, 4);
-                myFont.drawString(currentMessage.at(i), (int)ofRandom(-xoff, xoff), 0);
+                myFont.drawString(currentMessageTokens.at(i), (int)ofRandom(-xoff, xoff), 0);
 
                 // place some legible words
                 if((numWordsPlaced > 500) && (numWordsPlaced < 600) && (currentImportantWordIndex != i)){
                     ofSetColor(255, 8);
-                    myFont.drawString(currentMessage.at(i), 0, 0);
+                    myFont.drawString(currentMessageTokens.at(i), 0, 0);
                 }
             }
             else{
                 ofSetColor(0, 4);
-                myFont.drawString(currentMessage.at(i), (int)ofRandom(-xoff, xoff), 0);
+                myFont.drawString(currentMessageTokens.at(i), (int)ofRandom(-xoff, xoff), 0);
             }
             ofPopMatrix();
         }
