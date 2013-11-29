@@ -17,5 +17,6 @@ class Bling : public NotTooPublic{
         ofColor blingColor;
         float currentMessageScaling;
         vector<ofPath> currentMessagePath;
+        int currentMessagePoints;
         void handleNewMessage();
 };

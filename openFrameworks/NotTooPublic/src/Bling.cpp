@@ -30,6 +30,16 @@ void Bling::handleNewMessage(){
                                     fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
+
+    currentMessagePoints = 0;
+    for(int i=0; i<currentMessagePath.size(); i++){
+        for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
+            for(int k=0; k<currentMessagePath.at(i).getOutline().at(j).size(); k++){
+                currentMessagePoints++;
+            }
+        }
+    }
+
     currentState = STATE_GOLD;
     noiseScale = INITIAL_NOISE_SCALE;
     lastStateChangeMillis = nowMillis;
@@ -144,7 +154,7 @@ void Bling::update(){
                     float dy = ofNoise(complexity*tp.x/ofGetWidth()-PI, complexity*tp.y/ofGetHeight()-PI, (float)(ofGetFrameNum())/132.0f-PI);
                     float a = noiseScale/2*ofNoise(dy,dx,(float)(ofGetFrameNum())/100.0f);
                     ofFill();
-                    if(!(k%1)){
+                    if(!(k%(int)ceil(currentMessagePoints/20000.0f))){
                         ofSetColor(blingColor,64);
                         ofCircle(tp.x-a+2*a*dy, tp.y-a+2*a*dx, 1);
                     }
