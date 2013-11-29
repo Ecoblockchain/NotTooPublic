@@ -34,8 +34,8 @@ void Bling::handleNewMessage(){
             currentMessage.replace(sp,1,"\n");
         }
     }
-    currentMessageScaling = min(0.5*fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
-                                0.5*fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
+    currentMessageScaling = 0.5*min(fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
+                                    fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
     currentState = STATE_GOLD;
@@ -95,9 +95,9 @@ void Bling::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
         ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
         ofSetLineWidth(2);
         ofSetColor(255,(int)ofMap(nowMillis - lastStateChangeMillis, 1500, 3000, 0, 128,true));
         ofNoFill();
@@ -139,9 +139,9 @@ void Bling::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofPushMatrix();
-        ofTranslate((fboCanvas.getWidth()-myFont.stringWidth(currentMessage))/2,
-                    (fboCanvas.getHeight()-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
         ofScale(currentMessageScaling, currentMessageScaling);
+        ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
+                    (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
         ofSetLineWidth(2);
         for(int i=0; i<currentMessagePath.size(); i++){
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
