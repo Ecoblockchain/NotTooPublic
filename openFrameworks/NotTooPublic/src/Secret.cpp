@@ -108,15 +108,19 @@ void Secret::update(){
                              min(abs((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2), myFont.stringWidth(currentMessage.at(i))/2));
             ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessage.at(i)))/2,
                         i*myFont.getLineHeight()+myFont.stringHeight("P"));
-            if(ofRandom(1) < 0.5){
+            if(ofRandom(1) < 0.4){
                 ofSetColor(255, 4);
-                myFont.drawString(currentMessage.at(i), ofRandom(-xoff, xoff), 0);
+                myFont.drawString(currentMessage.at(i), (int)ofRandom(-xoff, xoff), 0);
 
                 // place some legible words
-                if((numWordsPlaced > 450) && (numWordsPlaced < 500) && (currentImportantWordIndex != i)){
+                if((numWordsPlaced > 500) && (numWordsPlaced < 600) && (currentImportantWordIndex != i)){
                     ofSetColor(255, 8);
                     myFont.drawString(currentMessage.at(i), 0, 0);
                 }
+            }
+            else{
+                ofSetColor(0, 4);
+                myFont.drawString(currentMessage.at(i), (int)ofRandom(-xoff, xoff), 0);
             }
             ofPopMatrix();
         }
