@@ -41,6 +41,16 @@ void Wish::handleNewMessage(){
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
     currentDistance = 0.9*originalDistance/currentMessageScaling;
+    currentMessagePoints = 0;
+
+    for(int i=0; i<currentMessagePath.size(); i++){
+        currentMessagePath.at(i).simplify();
+        for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
+            for(int k=0; k<currentMessagePath.at(i).getOutline().at(j).size(); k++){
+                currentMessagePoints++;
+            }
+        }
+    }
     currentState = STATE_SPERM;
     lastStateChangeMillis = nowMillis;
 }
@@ -120,14 +130,13 @@ void Wish::update(){
 
         ofNoFill();
         for(int i=0; i<currentMessagePath.size(); i++){
-            currentMessagePath.at(i).simplify();
             ofVec3f center = currentMessagePath.at(i).getTessellation().getCentroid();
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
                 for(int k=0; k<currentMessagePath.at(i).getOutline().at(j).size(); k++){
                     ofPoint tp = currentMessagePath.at(i).getOutline().at(j).getVertices().at(k);
                     ofVec3f direction = (tp-center).normalize();
                     tp += direction*max(0.0f,currentDistance);
-                    if(!(k%1)){
+                    if(!(k%(int)ceil(currentMessagePoints/1000.0f))){
                         ofSetColor(255);
                         int complexity = 16;
                         float magnitude = 8.0f;
@@ -164,7 +173,6 @@ void Wish::update(){
         ofSetColor(255,8);
         ofSetLineWidth(2);
         for(int i=0; i<currentMessagePath.size(); i++){
-            //currentMessagePath.at(i).simplify();
             ofBeginShape();
             ofVec3f center = currentMessagePath.at(i).getTessellation().getCentroid();
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
@@ -195,14 +203,13 @@ void Wish::update(){
         ofNoFill();
         ofSetLineWidth(1.5);
         for(int i=0; i<currentMessagePath.size(); i++){
-            currentMessagePath.at(i).simplify();
             ofVec3f center = currentMessagePath.at(i).getTessellation().getCentroid();
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
                 for(int k=0; k<currentMessagePath.at(i).getOutline().at(j).size(); k++){
                     ofPoint tp = currentMessagePath.at(i).getOutline().at(j).getVertices().at(k);
                     ofVec3f direction = (tp-center).normalize();
                     tp += direction*max(0.0f,currentDistance);
-                    if(!(k%1)){
+                    if(!(k%(int)ceil(currentMessagePoints/1000.0f))){
                         ofSetColor(255,128);
                         ofLine(center, tp);
                     }
@@ -230,7 +237,6 @@ void Wish::update(){
         ofNoFill();
         ofSetLineWidth(1.5);
         for(int i=0; i<currentMessagePath.size(); i++){
-            currentMessagePath.at(i).simplify();
             ofVec3f center = currentMessagePath.at(i).getTessellation().getCentroid();
             for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
                 for(int k=0; k<currentMessagePath.at(i).getOutline().at(j).size(); k++){
@@ -238,7 +244,7 @@ void Wish::update(){
                     ofVec3f direction = (tp-center).normalize();
                     tp += direction*max(0.0f,currentDistance);
                     ofPoint maxDistance = tp+direction*originalDistance;
-                    if(!(k%1)){
+                    if(!(k%(int)ceil(currentMessagePoints/1000.0f))){
                         ofSetColor(255,128);
                         ofLine(maxDistance, tp);
                     }

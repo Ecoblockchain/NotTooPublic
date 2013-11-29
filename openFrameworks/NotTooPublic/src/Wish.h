@@ -12,6 +12,7 @@ class Wish : public NotTooPublic{
         string currentMessage;
         vector<ofPath> currentMessagePath;
         float currentMessageScaling;
+        int currentMessagePoints;
         float currentDistance, originalDistance;
         void handleNewMessage();
 };
