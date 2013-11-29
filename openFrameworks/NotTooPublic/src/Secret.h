@@ -8,7 +8,6 @@ class Secret : public NotTooPublic{
         void update();
         void draw();
     private:
-        const int FADE_DELTA = 5;
         const string myFontName = "TrajanPro-Regular.ttf";
         int numWordsPlaced;
         vector<string> currentMessage;

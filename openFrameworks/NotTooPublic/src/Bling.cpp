@@ -22,31 +22,7 @@ void Bling::update(){
     NotTooPublic::update();
 
     if(currentState == STATE_INTRO){
-        if(currentFadeValue >= 255){
-            introImages.pop_front();
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = -255;
-            if(introImages.size() > 0){
-                currentState = STATE_INTRO;
-            }
-            else{
-                fboCanvas.begin();
-                ofEnableAlphaBlending();
-                ofBackground(0);
-                ofDisableAlphaBlending();
-                fboCanvas.end();
-                currentState = STATE_BLANK;
-            }
-        }
-        // fading out...
-        else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 2000)){
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
-        }
-        // fading in...
-        else if(currentFadeValue < 0){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
-        }
+        stateLogicIntro();
     }
     else if(currentState == STATE_BLANK){
         if(currentFadeValue < 0){
@@ -122,21 +98,8 @@ void Bling::update(){
         }
     }
     else if(currentState == STATE_OUTRO){
-        if(currentFadeValue >= 255){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = 255;
-        }
-        // fading out...
-        else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 5000)){
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
-        }
-        // fading in...
-        else if(currentFadeValue < 0){
-            lastStateChangeMillis = nowMillis;
-            currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
-        }
+        stateLogicOutro();
     }
-
 
     if(currentState == STATE_PAUSE){
         fboCanvas.begin();

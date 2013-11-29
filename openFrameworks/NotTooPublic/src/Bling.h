@@ -10,7 +10,6 @@ class Bling : public NotTooPublic{
         void drawOld();
 
     private:
-        const int FADE_DELTA = 5;
         const float INITIAL_NOISE_SCALE = 900;
         const string myFontName = "Garamond-Regular.ttf";
         float noiseScale;

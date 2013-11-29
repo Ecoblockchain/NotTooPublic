@@ -20,6 +20,7 @@ class NotTooPublic : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 	protected:
+        const int FADE_DELTA = 5;
         ofxOscReceiver myOscReceiver;
         ofxOscMessage myOscMessage;
         deque< pair<string,string> > myMessages;
@@ -36,4 +37,6 @@ class NotTooPublic : public ofBaseApp{
         void loadTitleFbo(string filename);
         void drawIntro();
         void drawCredits();
+        void stateLogicIntro();
+        void stateLogicOutro();
 };

@@ -8,7 +8,6 @@ class Wish : public NotTooPublic{
         void update();
         void draw();
     private:
-        const int FADE_DELTA = 5;
         const string myFontName = "cooperBlack.ttf";
         string currentMessage;
         vector<ofPath> currentMessagePath;

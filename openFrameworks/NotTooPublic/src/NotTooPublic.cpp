@@ -88,6 +88,7 @@ void NotTooPublic::drawIntro(){
     ofDisableAlphaBlending();
     fboCanvas.end();
 }
+
 void NotTooPublic::drawCredits(){
     fboCanvas.begin();
     ofEnableAlphaBlending();
@@ -103,6 +104,50 @@ void NotTooPublic::drawCredits(){
     fboCanvas.end();
 }
 
+void NotTooPublic::stateLogicIntro(){
+    if(currentFadeValue >= 255){
+        introImages.pop_front();
+        currentFadeValue = -255;
+        lastStateChangeMillis = nowMillis;
+        if(introImages.size() > 0){
+            currentState = STATE_INTRO;
+        }
+        else{
+            fboCanvas.begin();
+            ofEnableAlphaBlending();
+            ofEnableSmoothing();
+            ofBackground(0);
+            ofDisableAlphaBlending();
+            fboCanvas.end();
+            currentState = STATE_BLANK;
+        }
+    }
+    // fading out...
+    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 2000)){
+        currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
+    }
+    // fading in...
+    else if(currentFadeValue < 0){
+        lastStateChangeMillis = nowMillis;
+        currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
+    }
+}
+
+void NotTooPublic::stateLogicOutro(){
+    if(currentFadeValue >= 255){
+        lastStateChangeMillis = nowMillis;
+        currentFadeValue = 255;
+    }
+    // fading out...
+    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 5000)){
+        currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
+    }
+    // fading in...
+    else if(currentFadeValue < 0){
+        lastStateChangeMillis = nowMillis;
+        currentFadeValue = min(currentFadeValue+FADE_DELTA, 0);
+    }
+}
 
 //--------------------------------------------------------------
 void NotTooPublic::draw(){
