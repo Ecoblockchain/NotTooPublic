@@ -33,8 +33,8 @@ void Wish::handleNewMessage(){
 
     currentMessagePath = myFont.getStringAsPoints(currentMessage);
     currentDistance = 0.9*originalDistance/currentMessageScaling;
-    currentMessagePoints = 0;
 
+    currentMessagePoints = 0;
     for(int i=0; i<currentMessagePath.size(); i++){
         currentMessagePath.at(i).simplify();
         for(int j=0; j<currentMessagePath.at(i).getOutline().size(); j++){
