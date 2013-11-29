@@ -24,16 +24,6 @@ void Secret::handleNewMessage(){
     iss.str(currentPosTags);
     copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter<vector<string> >(currentMessagePosTags));
 
-    // push PDT between messages
-    if(currentMessage.compare("Please Don't Tell") != 0){
-        if(newMessages.size() > 0){
-            newMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
-        }
-        else{
-            oldMessages.push_front(pair<string,string>("Please Don't Tell", "JJ JJ JJ"));
-        }
-    }
-
     // figure out most important word
     // largest noun or verb if posTags are good
     // largest word otherwise
