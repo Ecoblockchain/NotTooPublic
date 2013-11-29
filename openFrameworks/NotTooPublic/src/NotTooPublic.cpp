@@ -178,8 +178,7 @@ void NotTooPublic::draw(){
     fboCanvas.draw(0, fboTitle.getHeight());
 
     // TEST/DEBUG
-    ofSetColor(255);
-    ofDrawBitmapString(ofToString(ofGetFrameRate()), 0,30);
+    ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 0,30);
 }
 
 //--------------------------------------------------------------
