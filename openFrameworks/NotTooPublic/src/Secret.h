@@ -10,8 +10,6 @@ class Secret : public NotTooPublic{
     private:
         const int FADE_DELTA = 5;
         const string myFontName = "TrajanPro-Regular.ttf";
-        enum State {STATE_INTRO, STATE_BLANK, STATE_MESSAGE, STATE_OUTRO};
-        State currentState;
         int numWordsPlaced;
         vector<string> currentMessage;
         int currentImportantWordIndex;

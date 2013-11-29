@@ -29,6 +29,9 @@ class NotTooPublic : public ofBaseApp{
         long long int nowMillis, lastStateChangeMillis, startMillis;
         int currentFadeValue;
         ofFbo fboTitle, fboCanvas;
+        enum State {STATE_INTRO, STATE_BLANK, STATE_GOLD, STATE_PAUSE, STATE_DIAMOND, STATE_MESSAGE,
+                    STATE_SPERM, STATE_LINES, STATE_CLEAR,STATE_OUTRO};
+        State currentState;
         void loadIntroImages(string filenamePrefix);
         void loadTitleFbo(string filename);
         void drawIntro();
