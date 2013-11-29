@@ -88,13 +88,14 @@ void Secret::update(){
     if(currentState == STATE_MESSAGE){
         fboCanvas.begin();
         ofEnableAlphaBlending();
+        float yoff = currentMessageTokens.size()*(0.8*myFont.getLineHeight());
         for(int i=0; i<currentMessageTokens.size(); i++){
             ofPushMatrix();
             float xoff = max(myFont.stringWidth("I"),
                              min(abs((ofGetWidth()-myFont.stringWidth(currentMessageTokens.at(i)))/2),
                                  myFont.stringWidth(currentMessageTokens.at(i))/2));
             ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessageTokens.at(i)))/2,
-                        i*myFont.getLineHeight()+myFont.stringHeight("P"));
+                        i*(0.8*myFont.getLineHeight())+(myFont.stringHeight("P")) +(fboCanvas.getHeight()-yoff)/2);
             if(ofRandom(1) < 0.75){
                 ofSetColor(255, 2);
                 myFont.drawString(currentMessageTokens.at(i), (int)ofRandom(-xoff, xoff), 0);
