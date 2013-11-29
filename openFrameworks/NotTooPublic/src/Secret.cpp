@@ -68,7 +68,7 @@ void Secret::update(){
         numWordsPlaced = 0;
     }
     else if(currentState == STATE_MESSAGE) {
-        if(numWordsPlaced > 720){
+        if(numWordsPlaced > 800){
             currentFadeValue = min(currentFadeValue+FADE_DELTA/2, 255);
         }
         if(currentFadeValue >= 255){
@@ -105,19 +105,14 @@ void Secret::update(){
                                  myFont.stringWidth(currentMessageTokens.at(i))/2));
             ofTranslate((ofGetWidth()-myFont.stringWidth(currentMessageTokens.at(i)))/2,
                         i*myFont.getLineHeight()+myFont.stringHeight("P"));
-            if(ofRandom(1) < 0.4){
-                ofSetColor(255, 4);
+            if(ofRandom(1) < 0.75){
+                ofSetColor(255, 2);
                 myFont.drawString(currentMessageTokens.at(i), (int)ofRandom(-xoff, xoff), 0);
-
-                // place some legible words
-                if((numWordsPlaced > 500) && (numWordsPlaced < 600) && (currentImportantWordIndex != i)){
-                    ofSetColor(255, 8);
-                    myFont.drawString(currentMessageTokens.at(i), 0, 0);
-                }
             }
-            else{
-                ofSetColor(0, 4);
-                myFont.drawString(currentMessageTokens.at(i), (int)ofRandom(-xoff, xoff), 0);
+            // place some legible words
+            if((numWordsPlaced > 600) && (numWordsPlaced < 700) && (currentImportantWordIndex != i)){
+                ofSetColor(255, 2);
+                myFont.drawString(currentMessageTokens.at(i), 0, 0);
             }
             ofPopMatrix();
         }
