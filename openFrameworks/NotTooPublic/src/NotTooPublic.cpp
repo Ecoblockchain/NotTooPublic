@@ -126,7 +126,7 @@ void NotTooPublic::stateLogicIntro(){
         }
     }
     // fading out...
-    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 2000)){
+    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 20000)){
         currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
     }
     // fading in...
