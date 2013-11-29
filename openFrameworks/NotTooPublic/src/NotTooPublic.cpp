@@ -63,8 +63,8 @@ void NotTooPublic::loadTitleFbo(string filename){
     fboTitle.begin();
     ofEnableSmoothing();
     ofEnableAlphaBlending();
-    ofBackground(0,0);
-    ofSetColor(255,255);
+    ofBackground(255);
+    ofSetColor(0,255);
     ofImage tt;
     tt.loadImage(filename);
     ofPushMatrix();
