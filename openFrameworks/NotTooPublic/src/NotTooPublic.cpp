@@ -106,6 +106,13 @@ void NotTooPublic::drawCredits(){
 
 //--------------------------------------------------------------
 void NotTooPublic::draw(){
+    ofBackground(0);
+    ofSetColor((currentState == STATE_BLANK)?255-abs(currentFadeValue):255);
+    if((currentState != STATE_INTRO) && (currentState != STATE_OUTRO)){
+        fboTitle.draw(0,0);
+    }
+    ofSetColor(255-abs(currentFadeValue));
+    fboCanvas.draw(0, fboTitle.getHeight());
 }
 
 //--------------------------------------------------------------
