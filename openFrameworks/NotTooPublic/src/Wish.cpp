@@ -151,13 +151,14 @@ void Wish::update(){
     if(currentState == STATE_PAUSE){
         fboCanvas.begin();
         ofEnableAlphaBlending();
-        ofFill();
-        ofSetColor(0, 8);
-        //ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
         ofScale(currentMessageScaling, currentMessageScaling);
         ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
                     (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
+
+        ofFill();
+        ofSetColor(0,8);
+        myFont.drawString(currentMessage, 0, 0);
 
         ofNoFill();
         ofSetColor(255,8);
