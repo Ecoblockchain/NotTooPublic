@@ -113,6 +113,7 @@ void Wish::update(){
         fboCanvas.begin();
         ofEnableAlphaBlending();
         ofFill();
+        // SPERM: ofSetColor(0, 16);
         ofSetColor(0, 64);
         ofRect(0,0, fboCanvas.getWidth(), fboCanvas.getHeight());
         ofPushMatrix();
@@ -129,6 +130,7 @@ void Wish::update(){
                     ofVec3f direction = (tp-center).normalize();
                     tp += direction*max(0.0f,currentDistance);
                     if(!(k%(int)ceil(currentMessagePoints/1000.0f))){
+                        // SPERM: int complexity = 16;
                         int complexity = 4;
                         float magnitude = 8.0f;
                         float dx = ofNoise(complexity*tp.x/fboCanvas.getWidth()+PI,
