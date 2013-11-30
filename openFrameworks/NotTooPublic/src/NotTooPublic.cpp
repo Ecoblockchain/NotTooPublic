@@ -126,7 +126,7 @@ void NotTooPublic::stateLogicIntro(){
         }
     }
     // fading out...
-    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 20000)){
+    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 30000)){
         currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
     }
     // fading in...
@@ -142,7 +142,7 @@ void NotTooPublic::stateLogicOutro(){
         currentFadeValue = 255;
     }
     // fading out...
-    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 5000)){
+    else if((currentFadeValue >= 0) && (nowMillis - lastStateChangeMillis > 10000)){
         currentFadeValue = min(currentFadeValue+FADE_DELTA, 255);
     }
     // fading in...
