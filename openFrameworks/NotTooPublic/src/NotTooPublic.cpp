@@ -194,7 +194,7 @@ void NotTooPublic::draw(){
     }
 
     // TEST/DEBUG
-    ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 0,30);
+    //ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 0,30);
 }
 
 //--------------------------------------------------------------
