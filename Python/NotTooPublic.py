@@ -78,7 +78,7 @@ def loop():
         tweet = re.sub(r'(a *s *s)', 'grass', tweet)
         ## replaces double-spaces with single space
         tweet = re.sub(r'( +)', ' ', tweet)
-        taggedTweet = pos_tag(word_tokenize(tweet))
+        taggedTweet = pos_tag(tweet.split())
         for (word,tag) in taggedTweet:
             print "%s : %s" % (word,tag)
 
