@@ -26,6 +26,19 @@ void Bling::handleNewMessage(){
             currentMessage.replace(sp,1,"\n");
         }
     }
+
+    // center align
+    int startPos = 0;
+    while(startPos < (currentMessage.size()-1)){
+        int endPos = currentMessage.find_first_of("\n", startPos+1);
+        endPos = (endPos == string::npos)?currentMessage.size()-1:endPos;
+        currentMessage.insert(startPos+1,
+                              (int)max(0.0f,0.5f*(myFont.stringWidth(currentMessage)-myFont.stringWidth(currentMessage.substr(startPos, endPos-startPos)))/myFont.stringWidth("p")),
+                              ' ');
+        startPos = currentMessage.find_first_of("\n", startPos+1);
+        startPos = (startPos == string::npos)?currentMessage.size():startPos;
+    }
+
     currentMessageScaling = 0.5*min(fboCanvas.getWidth()/myFont.stringWidth(currentMessage),
                                     fboCanvas.getHeight()/myFont.stringHeight(currentMessage));
 
