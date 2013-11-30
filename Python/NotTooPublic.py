@@ -80,7 +80,8 @@ def loop():
         tweet = re.sub(r'( +)', ' ', tweet)
         taggedTweet = pos_tag(tweet.split())
         for (word,tag) in taggedTweet:
-            print "%s : %s" % (word,tag)
+            print "(%s:%s)" % (word,tag),
+        print " "
 
         ## forward to all subscribers
         msg = OSCMessage()
