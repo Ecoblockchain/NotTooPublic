@@ -160,7 +160,7 @@ void NotTooPublic::stateLogicBlank(){
     else if(currentFadeValue > 0){
         currentFadeValue = 0;
     }
-    else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 240000)){
+    else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 360000)){
         currentFadeValue = -255;
         currentState = STATE_OUTRO;
         lastStateChangeMillis = nowMillis;
