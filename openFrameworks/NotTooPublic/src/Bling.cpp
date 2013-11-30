@@ -61,12 +61,12 @@ void Bling::update(){
         }
         else{
             noiseScale *= 0.96;
-            blingColor = ofColor(218,188,68);
+            blingColor = ofColor(255,220,51);
             blingColor.lerp(ofColor(255,255,255), ofClamp((float)(nowMillis - lastStateChangeMillis)/2000.0f, 0, 1));
         }
     }
     else if(currentState == STATE_PAUSE){
-        if(nowMillis - lastStateChangeMillis > 3000){
+        if(nowMillis - lastStateChangeMillis > 6000){
             currentState = STATE_DIAMOND;
             blingFadeValue = 0;
             noiseScale = 32;
@@ -84,13 +84,22 @@ void Bling::update(){
         else{
             noiseScale *= 1.01;
             blingColor = ofColor(255,255,255);
-            if((nowMillis - lastStateChangeMillis > 3000) && (noiseScale > 10*INITIAL_NOISE_SCALE)){
+            if((nowMillis - lastStateChangeMillis > 3000) && (noiseScale > 4*INITIAL_NOISE_SCALE)){
                 blingFadeValue = min(blingFadeValue+FADE_DELTA, 1024);
             }
         }
     }
     else if(currentState == STATE_OUTRO){
         stateLogicOutro();
+    }
+
+    //// Actual Drawings
+    if(currentState == STATE_INTRO){
+        drawIntro();
+    }
+
+    if(currentState == STATE_OUTRO){
+        drawCredits();
     }
 
     if(currentState == STATE_PAUSE){
@@ -100,7 +109,7 @@ void Bling::update(){
         ofScale(currentMessageScaling, currentMessageScaling);
         ofTranslate((fboCanvas.getWidth()/currentMessageScaling-myFont.stringWidth(currentMessage))/2,
                     (fboCanvas.getHeight()/currentMessageScaling-myFont.stringHeight(currentMessage))/2+myFont.stringHeight("Tell"));
-        ofSetLineWidth(2);
+        ofSetLineWidth(4);
         ofSetColor(255,(int)ofMap(nowMillis - lastStateChangeMillis, 1500, 3000, 0, 128,true));
         ofNoFill();
         for(int i=0; i<currentMessagePath.size(); i++){
@@ -117,15 +126,6 @@ void Bling::update(){
         ofPopMatrix();
         ofDisableAlphaBlending();
         fboCanvas.end();
-    }
-
-    //// Actual Drawings
-    if(currentState == STATE_INTRO){
-        drawIntro();
-    }
-
-    if(currentState == STATE_OUTRO){
-        drawCredits();
     }
 
     if((currentState == STATE_DIAMOND) || (currentState == STATE_BLANK)){
@@ -155,8 +155,8 @@ void Bling::update(){
                     float a = noiseScale/2*ofNoise(dy,dx,(float)(ofGetFrameNum())/100.0f);
                     ofFill();
                     if(!(k%(int)ceil(currentMessagePoints/20000.0f))){
-                        ofSetColor(blingColor,64);
-                        ofCircle(tp.x-a+2*a*dy, tp.y-a+2*a*dx, 1);
+                        ofSetColor(blingColor,32);
+                        ofCircle(tp.x-a+2*a*dy, tp.y-a+2*a*dx, 1.5);
                     }
                 }
             }
