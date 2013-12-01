@@ -67,7 +67,7 @@ def setup():
 
     myOscClient = OSCClient()
     myOscServer = OSCServer(('127.0.0.1', 8888))
-    myOscServer.addMsgHandler('/NotTooPublic/subscribe', oscSubscribeHandler)
+    myOscServer.addMsgHandler('/NotTooPublic/call', oscSubscribeHandler)
     myOscServer.addMsgHandler('default', lambda addr, tags, args, source:None)
     oscThread = Thread(target=myOscServer.serve_forever)
     oscThread.start()
@@ -94,14 +94,20 @@ def cleanTagAndSendText(text):
 
     ## forward to all subscribers
     msg = OSCMessage()
-    msg.setAddress("/NotTooPublic/message")
+    msg.setAddress("/NotTooPublic/response")
     msg.append(" ".join([str(i[0]) for i in taggedText]))
     msg.append(" ".join([str(i[1]) for i in taggedText]))
+
+    delQ = Queue()
     for (ip,port) in myOscSubscribers:
         try:
             myOscClient.sendto(msg, (ip, port))
         except OSCClientError:
             print "no connection to %s : %s, can't send message" % (ip, port)
+            delQ.put((ip,port))
+
+    while not delQ.empty():
+        del myOscSubscribers[delQ.get()]
 
 
 def loop():
