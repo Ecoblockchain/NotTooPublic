@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import sys, time, getopt, re
+import sys, getopt, re
+from time import time, sleep
 from threading import Thread
 from Queue import Queue
 from cPickle import dump, load
@@ -38,7 +39,7 @@ def setup():
     global myOscSubscribers, myOscServer, oscThread, myOscClient
     secrets = {}
     myOscSubscribers = {}
-    lastTwitterCheck = time.time()
+    lastTwitterCheck = time()
     ## read secrets from file
     inFile = open('oauth.txt', 'r')
     for line in inFile:
@@ -61,7 +62,7 @@ def setup():
 def loop():
     global lastTwitterCheck, myTwitterStream, streamThread, myOscSubscribers
     ## check twitter queue
-    if((time.time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
+    if((time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
@@ -94,7 +95,7 @@ def loop():
             except OSCClientError:
                 print "no connection to %s : %s, can't send message" % (ip, port)
 
-        lastTwitterCheck = time.time()
+        lastTwitterCheck = time()
 
 if __name__=="__main__":
     setup()
@@ -102,11 +103,11 @@ if __name__=="__main__":
     try:
         while(True):
             ## keep it from looping faster than ~60 times per second
-            loopStart = time.time()
+            loopStart = time()
             loop()
-            loopTime = time.time()-loopStart
+            loopTime = time()-loopStart
             if (loopTime < 0.016):
-                time.sleep(0.016 - loopTime)
+                sleep(0.016 - loopTime)
     except KeyboardInterrupt :
         myTwitterStream.disconnect()
         myOscServer.close()
