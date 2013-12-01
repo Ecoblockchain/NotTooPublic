@@ -3,16 +3,10 @@
 void Wish::setup(){
     NotTooPublic::setup();
     myFont.loadFont(myFontName,100,true,true,true);
-    currentState = STATE_INTRO;
-
-    fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
-    fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
-
-    originalDistance = max(fboCanvas.getWidth(), fboCanvas.getHeight());
-    currentDistance = originalDistance;
-
     loadIntroImages("WishTitle");
     loadTitleFbo("WishTweetAt.png");
+    originalDistance = max(fboCanvas.getWidth(), fboCanvas.getHeight());
+    currentDistance = originalDistance;
 }
 
 void Wish::handleNewMessage(){

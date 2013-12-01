@@ -2,14 +2,9 @@
 
 void Secret::setup(){
     NotTooPublic::setup();
-    myFont.loadFont(myFontName,100,true,true,true);
     numWordsPlaced = 0;
     currentImportantWordIndex = -1;
-    currentState = STATE_INTRO;
-
-    fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
-    fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
-
+    myFont.loadFont(myFontName,100,true,true,true);
     loadIntroImages("SecretTitle");
     loadTitleFbo("SecretTweetAt.png");
 }

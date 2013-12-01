@@ -2,13 +2,8 @@
 
 void Bling::setup(){
     NotTooPublic::setup();
-    myFont.loadFont(myFontName,100,true,true,true);
     noiseScale = INITIAL_NOISE_SCALE;
-    currentState = STATE_INTRO;
-
-    fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
-    fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
-
+    myFont.loadFont(myFontName,100,true,true,true);
     loadIntroImages("BlingTitle");
     loadTitleFbo("BlingTweetAt.png");
 }
@@ -187,7 +182,7 @@ void Bling::draw(){
 void Bling::drawOld(){
     noiseScale *= (nowMillis < 2000)?0.96:(nowMillis < 5000)?1.0:1.01;
     ofSetColor(255,255);
-    fboTitle.draw(0,0);
+    //fboTitle.draw(0,0);
     nowMillis = ofGetElapsedTimeMillis();
     ofSetColor(255,128);
     ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()),0,20);

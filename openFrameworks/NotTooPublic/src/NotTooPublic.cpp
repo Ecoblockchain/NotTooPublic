@@ -19,17 +19,24 @@ void NotTooPublic::setup(){
 
     creditImage.loadImage("Credits.png");
 
-    nowMillis = ofGetElapsedTimeMillis();
-    lastStateChangeMillis = nowMillis;
-    startMillis = nowMillis;
-    currentFadeValue = -255;
+    fboTitle.allocate(ofGetWidth(), ofGetHeight()*0.15);
+    fboCanvas.allocate(ofGetWidth(), ofGetHeight()-fboTitle.getHeight());
 
     fboCanvas.begin();
     ofEnableSmoothing();
     fboCanvas.end();
 
+    nowMillis = ofGetElapsedTimeMillis();
+    lastStateChangeMillis = nowMillis;
+    startMillis = nowMillis;
+    currentFadeValue = -255;
+    currentState = STATE_INTRO;
+
     // TEST/DEBUG
     newMessages.push_back(pair<string,string>("Not Too Public", "RB RB JJ"));
+    //newMessages.push_back(pair<string,string>("I like to bare myself in public sometimes", "RB RB JJ"));
+    //newMessages.push_back(pair<string,string>("A fun and safe 2014 for everybody", "RB RB JJ"));
+    //newMessages.push_back(pair<string,string>("I can't believe it's not butter", "RB RB JJ"));
 }
 
 //--------------------------------------------------------------
