@@ -21,11 +21,6 @@ class NotTooPublic : public ofBaseApp{
 
 	protected:
         const int FADE_DELTA = 5;
-        ofxOscReceiver myOscReceiver;
-        ofxOscMessage myOscMessage;
-        deque< pair<string,string> > oldMessages, newMessages;
-        ofImage creditImage;
-        deque<ofImage> introImages;
         ofTrueTypeFont myFont;
         long long int nowMillis, lastStateChangeMillis, startMillis;
         int currentFadeValue;
@@ -42,4 +37,10 @@ class NotTooPublic : public ofBaseApp{
         void stateLogicOutro();
         void stateLogicBlank();
         virtual void handleNewMessage()=0;
+    private:
+        deque< pair<string,string> > oldMessages, newMessages;
+        ofxOscReceiver myOscReceiver;
+        ofxOscMessage myOscMessage;
+        ofImage creditImage;
+        deque<ofImage> introImages;
 };
