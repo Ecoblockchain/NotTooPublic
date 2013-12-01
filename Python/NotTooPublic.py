@@ -113,3 +113,4 @@ if __name__=="__main__":
         myOscServer.close()
         streamThread.join()
         oscThread.join()
+        sys.exit(0)
