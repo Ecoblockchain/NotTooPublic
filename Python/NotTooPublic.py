@@ -108,7 +108,7 @@ def loop():
     global lastTwitterCheck, myTwitterStream, streamThread, myOscSubscribers
     global lastSmsCheck, mySmsClient, newestSmsSeconds
     ## check twitter queue
-    if((time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
+    if((time()-lastTwitterCheck > 5) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
