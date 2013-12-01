@@ -39,9 +39,10 @@ class NotTooPublic : public ofBaseApp{
         virtual void handleNewMessage()=0;
     private:
         deque< pair<string,string> > oldMessages, newMessages;
+        ofxOscMessage callOscMessage, responseOscMessage;
+        ofxOscSender myOscSender;
         ofxOscReceiver myOscReceiver;
-        ofxOscMessage myOscMessage;
-        ofImage creditImage;
-        ofFbo fboTitle;
         deque<ofImage> introImages;
+        ofFbo fboTitle;
+        ofImage creditImage;
 };

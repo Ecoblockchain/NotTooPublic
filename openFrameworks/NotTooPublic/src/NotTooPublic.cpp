@@ -10,12 +10,10 @@ void NotTooPublic::setup(){
 
     myOscReceiver.setup(OSC_RCVR_IP);
 
-    ofxOscSender myOscSender;
     myOscSender.setup("localhost", 8888);
-    ofxOscMessage m;
-    m.setAddress("/NotTooPublic/subscribe");
-    m.addIntArg(OSC_RCVR_IP);
-    myOscSender.sendMessage(m);
+    callOscMessage.setAddress("/NotTooPublic/call");
+    callOscMessage.addIntArg(OSC_RCVR_IP);
+    myOscSender.sendMessage(callOscMessage);
 
     creditImage.loadImage("Credits.png");
 
@@ -179,11 +177,15 @@ void NotTooPublic::stateLogicBlank(){
 
 //--------------------------------------------------------------
 void NotTooPublic::update(){
+    // if almost no new messages, ask for more
+    if(newMessages.size() < 2){
+        myOscSender.sendMessage(callOscMessage);
+    }
     // get OSC: check for waiting messages
 	while(myOscReceiver.hasWaitingMessages()){
-		myOscReceiver.getNextMessage(&myOscMessage);
-		if(myOscMessage.getAddress().compare("/NotTooPublic/message") == 0){
-            newMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
+		myOscReceiver.getNextMessage(&responseOscMessage);
+		if(responseOscMessage.getAddress().compare("/NotTooPublic/response") == 0){
+            newMessages.push_back(pair<string, string>(responseOscMessage.getArgAsString(0),responseOscMessage.getArgAsString(1)));
             if(newMessages.back().first.compare("") == 0){
                 newMessages.pop_back();
             }
