@@ -45,4 +45,5 @@ class NotTooPublic : public ofBaseApp{
         deque<ofImage> introImages;
         ofFbo fboTitle;
         ofImage creditImage;
+        long long int lastCallMillis;
 };

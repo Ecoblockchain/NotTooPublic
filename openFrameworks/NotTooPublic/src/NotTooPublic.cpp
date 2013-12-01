@@ -27,6 +27,7 @@ void NotTooPublic::setup(){
     nowMillis = ofGetElapsedTimeMillis();
     lastStateChangeMillis = nowMillis;
     startMillis = nowMillis;
+    lastCallMillis = nowMillis;
     currentFadeValue = -255;
     currentState = STATE_INTRO;
 
@@ -177,9 +178,12 @@ void NotTooPublic::stateLogicBlank(){
 
 //--------------------------------------------------------------
 void NotTooPublic::update(){
+    nowMillis = ofGetElapsedTimeMillis();
+
     // if almost no new messages, ask for more
-    if(newMessages.size() < 2){
+    if((newMessages.size() < 2) && (nowMillis-lastCallMillis > 15000)){
         myOscSender.sendMessage(callOscMessage);
+        lastCallMillis = nowMillis;
     }
     // get OSC: check for waiting messages
 	while(myOscReceiver.hasWaitingMessages()){
@@ -191,7 +195,6 @@ void NotTooPublic::update(){
             }
 		}
     }
-    nowMillis = ofGetElapsedTimeMillis();
 }
 
 //--------------------------------------------------------------
