@@ -59,6 +59,22 @@ def setup():
     oscThread = Thread(target=myOscServer.serve_forever)
     oscThread.start()
 
+def cleanText(text):
+    ## removes punctuation
+    text = re.sub(r'[.,;:!?*/+=\-&%^/\\_$~()<>{}\[\]]', ' ', text)
+    ## removes some bad words
+    text = re.sub(r'(f *u *c *k)', 'tuck', text)
+    text = re.sub(r'(s *h *i *t)', 'isht', text)
+    text = re.sub(r'(c *o *c *k)', 'dock', text)
+    text = re.sub(r'(d *i *c *k)', 'wick', text)
+    text = re.sub(r'(c *u *n *t)', 'grunt', text)
+    text = re.sub(r'(p *u *s *s *y)', 'juicy', text)
+    text = re.sub(r'(b *i *t *c *h)', 'itch', text)
+    text = re.sub(r'(a *s *s)', 'grass', text)
+    ## replaces double-spaces with single space
+    text = re.sub(r'( +)', ' ', text)
+    return text
+
 def loop():
     global lastTwitterCheck, myTwitterStream, streamThread, myOscSubscribers
     ## check twitter queue
@@ -66,19 +82,8 @@ def loop():
         tweet = myTwitterStream.get().lower()
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
-        ## removes punctuation
-        tweet = re.sub(r'[.,;:!?*/+=\-&%^/\\_$~()<>{}\[\]]', ' ', tweet)
-        ## removes some bad words
-        tweet = re.sub(r'(f *u *c *k)', 'tuck', tweet)
-        tweet = re.sub(r'(s *h *i *t)', 'isht', tweet)
-        tweet = re.sub(r'(c *o *c *k)', 'dock', tweet)
-        tweet = re.sub(r'(d *i *c *k)', 'wick', tweet)
-        tweet = re.sub(r'(c *u *n *t)', 'grunt', tweet)
-        tweet = re.sub(r'(p *u *s *s *y)', 'juicy', tweet)
-        tweet = re.sub(r'(b *i *t *c *h)', 'itch', tweet)
-        tweet = re.sub(r'(a *s *s)', 'grass', tweet)
-        ## replaces double-spaces with single space
-        tweet = re.sub(r'( +)', ' ', tweet)
+        ## removes punctuation, bad words and double spaces
+        tweet = cleanText(tweet)
         taggedTweet = pos_tag(tweet.split())
         for (word,tag) in taggedTweet:
             print "(%s:%s)" % (word,tag),
