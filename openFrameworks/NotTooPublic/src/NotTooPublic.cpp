@@ -154,7 +154,7 @@ void NotTooPublic::stateLogicBlank(){
     else if(currentFadeValue > 0){
         currentFadeValue = 0;
     }
-    else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 360000)){
+    else if((nowMillis - lastStateChangeMillis > 1000) && (nowMillis - startMillis > 360000) && (newMessages.size() < 1)){
         currentFadeValue = -255;
         currentState = STATE_OUTRO;
         lastStateChangeMillis = nowMillis;
@@ -181,7 +181,7 @@ void NotTooPublic::update(){
     nowMillis = ofGetElapsedTimeMillis();
 
     // if almost no new messages, ask for more
-    if((newMessages.size() < 2) && (nowMillis-lastCallMillis > 15000)){
+    if((newMessages.size() < 2) && (nowMillis - lastCallMillis > 15000) && (nowMillis - startMillis < 360000)){
         myOscSender.sendMessage(callOscMessage);
         lastCallMillis = nowMillis;
     }
