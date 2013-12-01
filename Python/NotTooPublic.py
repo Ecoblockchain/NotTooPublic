@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import sys, getopt, re
-from time import time, sleep
+from time import time, sleep, strptime, strftime, localtime, gmtime
+from calendar import timegm
 from threading import Thread
 from Queue import Queue
 from cPickle import dump, load
 from OSC import OSCClient, OSCMessage, OSCClientError, OSCServer, getUrlStr
 from nltk import pos_tag, word_tokenize
 from twython import TwythonStreamer
+from twilio.rest import TwilioRestClient
 
 ## What to search for
 SEARCH_TERMS = ["@nottoopublic", "#nottoopublic"]
+PHONE_NUMBER = "+14152336287"
 
 class TwitterStreamReceiver(TwythonStreamer):
     def __init__(self, *args, **kwargs):
@@ -36,21 +39,31 @@ def oscSubscribeHandler(addr, tags, args, source):
 
 def setup():
     global lastTwitterCheck, myTwitterStream, streamThread
+    global lastSmsCheck, mySmsClient, newestSmsSeconds
     global myOscSubscribers, myOscServer, oscThread, myOscClient
     secrets = {}
     myOscSubscribers = {}
     lastTwitterCheck = time()
+    lastSmsCheck = time()
+    newestSmsSeconds = timegm(gmtime())
+
     ## read secrets from file
     inFile = open('oauth.txt', 'r')
     for line in inFile:
         (k,v) = line.split()
         secrets[k] = v
+
+    ## start Twitter stream reader
     myTwitterStream = TwitterStreamReceiver(app_key = secrets['CONSUMER_KEY'],
                                             app_secret = secrets['CONSUMER_SECRET'],
                                             oauth_token = secrets['ACCESS_TOKEN'],
                                             oauth_token_secret = secrets['ACCESS_SECRET'])
     streamThread = Thread(target=myTwitterStream.statuses.filter, kwargs={'track':','.join(SEARCH_TERMS)})
     streamThread.start()
+
+    ## start Twilio client
+    mySmsClient = TwilioRestClient(account=secrets['ACCOUNT_SID'],
+                                   token=secrets['AUTH_TOKEN'])
 
     myOscClient = OSCClient()
     myOscServer = OSCServer(('127.0.0.1', 8888))
@@ -59,7 +72,7 @@ def setup():
     oscThread = Thread(target=myOscServer.serve_forever)
     oscThread.start()
 
-def cleanText(text):
+def cleanTagAndSendText(text):
     ## removes punctuation
     text = re.sub(r'[.,;:!?*/+=\-&%^/\\_$~()<>{}\[\]]', ' ', text)
     ## removes some bad words
@@ -73,34 +86,49 @@ def cleanText(text):
     text = re.sub(r'(a *s *s)', 'grass', text)
     ## replaces double-spaces with single space
     text = re.sub(r'( +)', ' ', text)
-    return text
+
+    taggedText = pos_tag(text.split())
+    for (word,tag) in taggedText:
+        print "(%s:%s)" % (word,tag),
+    print " "
+
+    ## forward to all subscribers
+    msg = OSCMessage()
+    msg.setAddress("/NotTooPublic/message")
+    msg.append(" ".join([str(i[0]) for i in taggedText]))
+    msg.append(" ".join([str(i[1]) for i in taggedText]))
+    for (ip,port) in myOscSubscribers:
+        try:
+            myOscClient.sendto(msg, (ip, port))
+        except OSCClientError:
+            print "no connection to %s : %s, can't send message" % (ip, port)
+
 
 def loop():
     global lastTwitterCheck, myTwitterStream, streamThread, myOscSubscribers
+    global lastSmsCheck, mySmsClient, newestSmsSeconds
     ## check twitter queue
     if((time()-lastTwitterCheck > 10) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
-        ## removes punctuation, bad words and double spaces
-        tweet = cleanText(tweet)
-        taggedTweet = pos_tag(tweet.split())
-        for (word,tag) in taggedTweet:
-            print "(%s:%s)" % (word,tag),
-        print " "
-
-        ## forward to all subscribers
-        msg = OSCMessage()
-        msg.setAddress("/NotTooPublic/message")
-        msg.append(" ".join([str(i[0]) for i in taggedTweet]))
-        msg.append(" ".join([str(i[1]) for i in taggedTweet]))
-        for (ip,port) in myOscSubscribers:
-            try:
-                myOscClient.sendto(msg, (ip, port))
-            except OSCClientError:
-                print "no connection to %s : %s, can't send message" % (ip, port)
-
+        ## clean, tag and send text
+        cleanTagAndSendText(tweet)
         lastTwitterCheck = time()
+
+    ## check sms
+    if(time()-lastSmsCheck > 5):
+        smss = mySmsClient.messages.list(to=PHONE_NUMBER,
+                                         after=strftime("%a, %d %b %Y %H:%M:%S", gmtime(newestSmsSeconds+1)))
+        for sms in smss:
+            smsSeconds = timegm(strptime(sms.date_sent, "%a, %d %b %Y %H:%M:%S +0000"))
+            if (smsSeconds > newestSmsSeconds):
+                newestSmsSeconds = smsSeconds
+            print "sms: %s" % (sms.body)
+            body = str(sms.body).lower()
+            ## clean, tag and send text
+            cleanTagAndSendText(body)
+        lastSmsCheck = time()
 
 if __name__=="__main__":
     setup()
