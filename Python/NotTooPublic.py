@@ -13,7 +13,7 @@ from twilio.rest import TwilioRestClient
 
 ## What to search for
 SEARCH_TERMS = ["@nottoopublic", "#nottoopublic"]
-PHONE_NUMBER = "+14152336287"
+PHONE_NUMBER = "+15105647823"
 
 class TwitterStreamReceiver(TwythonStreamer):
     def __init__(self, *args, **kwargs):
