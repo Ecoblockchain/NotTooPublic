@@ -39,21 +39,6 @@ void NotTooPublic::setup(){
     //newMessages.push_back(pair<string,string>("I can't believe it's not butter", "RB RB JJ"));
 }
 
-//--------------------------------------------------------------
-void NotTooPublic::update(){
-    // get OSC: check for waiting messages
-	while(myOscReceiver.hasWaitingMessages()){
-		myOscReceiver.getNextMessage(&myOscMessage);
-		if(myOscMessage.getAddress().compare("/NotTooPublic/message") == 0){
-            newMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
-            if(newMessages.back().first.compare("") == 0){
-                newMessages.pop_back();
-            }
-		}
-    }
-    nowMillis = ofGetElapsedTimeMillis();
-}
-
 void NotTooPublic::loadIntroImages(string filenamePrefix){
     ofDirectory dir(ofToDataPath(""));
     dir.listDir();
@@ -190,6 +175,21 @@ void NotTooPublic::stateLogicBlank(){
         }
         handleNewMessage();
     }
+}
+
+//--------------------------------------------------------------
+void NotTooPublic::update(){
+    // get OSC: check for waiting messages
+	while(myOscReceiver.hasWaitingMessages()){
+		myOscReceiver.getNextMessage(&myOscMessage);
+		if(myOscMessage.getAddress().compare("/NotTooPublic/message") == 0){
+            newMessages.push_back(pair<string, string>(myOscMessage.getArgAsString(0),myOscMessage.getArgAsString(1)));
+            if(newMessages.back().first.compare("") == 0){
+                newMessages.pop_back();
+            }
+		}
+    }
+    nowMillis = ofGetElapsedTimeMillis();
 }
 
 //--------------------------------------------------------------
