@@ -101,7 +101,9 @@ def cleanTagAndSendText(text):
     delQ = Queue()
     for (ip,port) in myOscSubscribers:
         try:
+            myOscClient.connect((ip, port))
             myOscClient.sendto(msg, (ip, port))
+            myOscClient.connect((ip, port))
         except OSCClientError:
             print "no connection to %s : %s, can't send message" % (ip, port)
             delQ.put((ip,port))
