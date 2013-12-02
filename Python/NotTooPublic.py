@@ -41,6 +41,7 @@ def setup():
     global lastTwitterCheck, myTwitterStream, streamThread
     global lastSmsCheck, mySmsClient, newestSmsSeconds
     global myOscSubscribers, myOscServer, oscThread, myOscClient
+    global logFile
     secrets = {}
     myOscSubscribers = {}
     lastTwitterCheck = time()
@@ -72,6 +73,9 @@ def setup():
     oscThread = Thread(target=myOscServer.serve_forever)
     oscThread.start()
 
+    ## open new file for writing log
+    logFile = open("data/"+strftime("%Y%m%d-%H%M%S", localtime())+".log", "a")
+
 def cleanTagAndSendText(text):
     ## removes punctuation
     text = re.sub(r'[.,;:!?*/+=\-&%^/\\_$~()<>{}\[\]]', ' ', text)
@@ -91,6 +95,10 @@ def cleanTagAndSendText(text):
     for (word,tag) in taggedText:
         print "(%s:%s)" % (word,tag),
     print " "
+
+    ## log
+    logFile.write(strftime("%Y%m%d-%H%M%S", localtime())+"***"+text+"\n")
+    logFile.flush()
 
     ## forward to all subscribers
     msg = OSCMessage()
@@ -150,6 +158,7 @@ if __name__=="__main__":
             if (loopTime < 0.016):
                 sleep(0.016 - loopTime)
     except KeyboardInterrupt :
+        logFile.close()
         myTwitterStream.disconnect()
         myOscServer.close()
         streamThread.join()
