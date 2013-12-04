@@ -21,7 +21,7 @@ class TwitterStreamReceiver(TwythonStreamer):
         self.tweetQ = Queue()
     def on_success(self, data):
         ## no re-tweets
-        if ('text' in data) and (not data['text'].startswith(('rt','RT'))):
+        if ('text' in data):
             self.tweetQ.put(data['text'].encode('utf-8'))
             print "received %s" % (data['text'].encode('utf-8'))
     def on_error(self, status_code, data):
@@ -126,6 +126,8 @@ def loop():
     ## check twitter queue
     if((time()-lastTwitterCheck > 5) and (not myTwitterStream.empty())):
         tweet = myTwitterStream.get().lower()
+        ## removes re-tweet
+        tweet = re.sub(r'(^[rR][tT] )', '', tweet)
         ## removes hashtags, arrobas and links
         tweet = re.sub(r'(#\S+)|(@\S+)|(http://\S+)', '', tweet)
         ## clean, tag and send text
