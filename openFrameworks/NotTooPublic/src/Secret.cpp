@@ -57,7 +57,7 @@ void Secret::update(){
         numWordsPlaced = 0;
     }
     else if(currentState == STATE_MESSAGE) {
-        if(numWordsPlaced > 800){
+        if(numWordsPlaced > 900){
             currentFadeValue = min(currentFadeValue+FADE_DELTA/2, 255);
         }
         if(currentFadeValue >= 255){
