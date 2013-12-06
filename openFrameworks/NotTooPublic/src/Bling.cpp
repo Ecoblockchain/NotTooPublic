@@ -9,7 +9,7 @@ void Bling::setup(){
 
     addOldMessage(pair<string,string>("I am awesome!", "RB RB JJ"));
     addOldMessage(pair<string,string>("I feel like 3 miles high", "RB VB RB JJ NF HH"));
-    addOldMessage(pair<string,string>("Get Some!", "VB VB"));
+    addOldMessage(pair<string,string>("get some!", "VB VB"));
     addOldMessage(pair<string,string>("I am more awesome!", "RB RB NN JJ"));
 }
 

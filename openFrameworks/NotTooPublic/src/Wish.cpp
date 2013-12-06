@@ -8,11 +8,11 @@ void Wish::setup(){
     originalDistance = max(fboCanvas.getWidth(), fboCanvas.getHeight());
     currentDistance = originalDistance;
 
-    addOldMessage(pair<string,string>("More love and hugs", "RB RB JJ NN"));
-    addOldMessage(pair<string,string>("Honesty", "NN"));
-    addOldMessage(pair<string,string>("More nugs and nugs", "VB NN JJ NN"));
-    addOldMessage(pair<string,string>("Egg", "NN"));
-    addOldMessage(pair<string,string>("Oh Sorry", "JJ NN"));
+    addOldMessage(pair<string,string>("more love and hugs", "RB RB JJ NN"));
+    addOldMessage(pair<string,string>("honesty, honestly", "NN AJ"));
+    addOldMessage(pair<string,string>("more nugs and nugs", "VB NN JJ NN"));
+    addOldMessage(pair<string,string>("egg", "NN"));
+    addOldMessage(pair<string,string>("doh sorry", "JJ NN"));
 }
 
 void Wish::handleNewMessage(){

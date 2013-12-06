@@ -9,8 +9,8 @@ void Secret::setup(){
     loadTitleFbo("SecretTweetAt.png");
 
     addOldMessage(pair<string,string>("I am not wearing any underwear", "RB RB JJ VV FV NN"));
-    addOldMessage(pair<string,string>("Sometimes I steal money from work", "RB VJ RB NN NF HH"));
-    addOldMessage(pair<string,string>("Don't Tell Anyone", "VB VB NN"));
+    addOldMessage(pair<string,string>("sometimes I steal money from work", "RB VJ RB NN NF HH"));
+    addOldMessage(pair<string,string>("don't tell anyone", "VB VB NN"));
 }
 
 void Secret::handleNewMessage(){
