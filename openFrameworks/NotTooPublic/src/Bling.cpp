@@ -6,6 +6,11 @@ void Bling::setup(){
     myFont.loadFont(myFontName,100,true,true,true);
     loadIntroImages("BlingTitle");
     loadTitleFbo("BlingTweetAt.png");
+
+    addOldMessage(pair<string,string>("I am awesome!", "RB RB JJ"));
+    addOldMessage(pair<string,string>("I feel like 3 miles high", "RB VB RB JJ NF HH"));
+    addOldMessage(pair<string,string>("Get Some!", "VB VB"));
+    addOldMessage(pair<string,string>("I am more awesome!", "RB RB NN JJ"));
 }
 
 void Bling::handleNewMessage(){

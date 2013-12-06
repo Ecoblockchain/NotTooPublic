@@ -37,6 +37,7 @@ class NotTooPublic : public ofBaseApp{
         void stateLogicOutro();
         void stateLogicBlank();
         virtual void handleNewMessage()=0;
+        void addOldMessage(pair<string,string> msg);
     private:
         deque< pair<string,string> > oldMessages, newMessages;
         ofxOscMessage callOscMessage, responseOscMessage;

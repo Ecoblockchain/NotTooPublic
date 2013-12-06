@@ -7,6 +7,12 @@ void Wish::setup(){
     loadTitleFbo("WishTweetAt.png");
     originalDistance = max(fboCanvas.getWidth(), fboCanvas.getHeight());
     currentDistance = originalDistance;
+
+    addOldMessage(pair<string,string>("More love and hugs", "RB RB JJ NN"));
+    addOldMessage(pair<string,string>("Honesty", "NN"));
+    addOldMessage(pair<string,string>("More nugs and nugs", "VB NN JJ NN"));
+    addOldMessage(pair<string,string>("Egg", "NN"));
+    addOldMessage(pair<string,string>("Oh Sorry", "JJ NN"));
 }
 
 void Wish::handleNewMessage(){

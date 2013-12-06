@@ -7,6 +7,10 @@ void Secret::setup(){
     myFont.loadFont(myFontName,100,true,true,true);
     loadIntroImages("SecretTitle");
     loadTitleFbo("SecretTweetAt.png");
+
+    addOldMessage(pair<string,string>("I am not wearing any underwear", "RB RB JJ VV FV NN"));
+    addOldMessage(pair<string,string>("Sometimes I steal money from work", "RB VJ RB NN NF HH"));
+    addOldMessage(pair<string,string>("Don't Tell Anyone", "VB VB NN"));
 }
 
 void Secret::handleNewMessage(){

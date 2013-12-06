@@ -33,9 +33,6 @@ void NotTooPublic::setup(){
 
     // TEST/DEBUG
     newMessages.push_back(pair<string,string>("Not Too Public", "RB RB JJ"));
-    //newMessages.push_back(pair<string,string>("I like to bare myself in public sometimes", "RB RB JJ"));
-    //newMessages.push_back(pair<string,string>("A fun and safe 2014 for everybody", "RB RB JJ"));
-    //newMessages.push_back(pair<string,string>("I can't believe it's not butter", "RB RB JJ"));
 }
 
 void NotTooPublic::loadIntroImages(string filenamePrefix){
@@ -174,6 +171,10 @@ void NotTooPublic::stateLogicBlank(){
         }
         handleNewMessage();
     }
+}
+
+void NotTooPublic::addOldMessage(pair<string,string> msg){
+    oldMessages.push_back(msg);
 }
 
 //--------------------------------------------------------------
