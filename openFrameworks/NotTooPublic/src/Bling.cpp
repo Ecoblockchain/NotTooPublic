@@ -11,6 +11,8 @@ void Bling::setup(){
     addOldMessage(pair<string,string>("I feel like 3 miles high", "RB VB RB JJ NF HH"));
     addOldMessage(pair<string,string>("get some!", "VB VB"));
     addOldMessage(pair<string,string>("I am more awesome!", "RB RB NN JJ"));
+    addOldMessage(pair<string,string>("your mom is awesome", "RB NN VB JJ"));
+    addOldMessage(pair<string,string>("itch why you hating on my mom", "NN RB NN VB JJ JJ NN"));
 }
 
 void Bling::handleNewMessage(){
